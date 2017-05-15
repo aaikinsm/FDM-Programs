@@ -1,0 +1,68 @@
+package com.fdmgroup.view;
+
+import java.awt.BorderLayout;
+import java.awt.Checkbox;
+import java.awt.CheckboxGroup;
+import java.awt.Container;
+import java.awt.FlowLayout;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
+
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JTextArea;
+
+public class ExamView extends JFrame{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
+	public static JLabel eTitle, eTimer, qCount; 
+	public static JTextArea qText; 
+	
+	public ExamView(String title){
+		eTitle = new JLabel(title);
+		eTimer = new JLabel();
+		qCount = new JLabel();
+		qText = new JTextArea();
+		
+		this.setSize(500,500);
+		this.setVisible(true);
+		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+		
+		init();
+	}
+	
+	public void init(){
+		
+		
+		CheckboxGroup selections = new CheckboxGroup();
+		Checkbox cbA = new Checkbox("a"); 
+		cbA.setCheckboxGroup(selections);
+		Checkbox cbB = new Checkbox("b"); 
+		cbB.setCheckboxGroup(selections);
+		Checkbox cbC = new Checkbox("c"); 
+		cbC.setCheckboxGroup(selections);
+		Checkbox cbD = new Checkbox("d"); 
+		cbD.setCheckboxGroup(selections);
+		
+		
+		Container container  = getContentPane();
+		Container innerContainer  = new Container();
+		innerContainer.setLayout(new FlowLayout());
+		container.setLayout(new GridLayout(2,3));
+		container.add(eTimer);
+		container.add(eTitle);
+		container.add(qCount);
+		container.add(innerContainer);
+		innerContainer.add(qText);
+		innerContainer.add(cbA);
+		innerContainer.add(cbB);
+		innerContainer.add(cbC);
+		innerContainer.add(cbD);
+		
+	}
+	
+}

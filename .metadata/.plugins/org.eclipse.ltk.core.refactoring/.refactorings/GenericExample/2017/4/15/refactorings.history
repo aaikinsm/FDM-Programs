@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename type &apos;com.fdmgroup.race.SUV&apos; to &apos;Suv&apos;&#x0D;&#x0A;- Original project: &apos;GenericExample&apos;&#x0D;&#x0A;- Original element: &apos;com.fdmgroup.race.SUV&apos;&#x0D;&#x0A;- Renamed element: &apos;com.fdmgroup.race.Suv&apos;&#x0D;&#x0A;- Update references to refactored element&#x0D;&#x0A;- Update textual occurrences in comments and strings" description="Rename type &apos;SUV&apos;" flags="589830" id="org.eclipse.jdt.ui.rename.type" input="/src&lt;com.fdmgroup.race{SUV.java[SUV" matchStrategy="1" name="Suv" qualified="false" references="true" similarDeclarations="false" stamp="1492094109695" textual="false" version="1.0"/>
+</session>

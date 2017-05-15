@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename local variable &apos;word&apos; in &apos;com.fdmgroup.Q9.main(...)&apos; to &apos;number&apos;&#x0D;&#x0A;- Original project: &apos;JavaAlgorithmicQuestions&apos;&#x0D;&#x0A;- Original element: &apos;com.fdmgroup.Q9.main(String[]).word&apos;&#x0D;&#x0A;- Renamed element: &apos;word&apos;&#x0D;&#x0A;- Update references to refactored element" description="Rename local variable &apos;word&apos;" id="org.eclipse.jdt.ui.rename.local.variable" input="/src&lt;com.fdmgroup{Q9.java[Q9~main~\[QString;@word!89!112!93!96!I!0!false" name="number" references="true" stamp="1491425595527" version="1.0"/>
+</session>

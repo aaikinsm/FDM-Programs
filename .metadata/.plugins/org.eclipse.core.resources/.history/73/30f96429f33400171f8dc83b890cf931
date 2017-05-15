@@ -1,0 +1,35 @@
+package com.fdmgroup.controller;
+
+import com.fdmgroup.dao.ExamCollectionDao;
+import com.fdmgroup.model.Exam;
+import com.fdmgroup.model.Result;
+import com.fdmgroup.model.User;
+
+public class ExamController {
+	private Exam exam;
+	private Result result;
+	private User user;
+	private ExamCollectionDao examCollectionDao;
+	private static ExamController examController;
+	private long examTimer;
+	
+	private ExamController(){
+		super();
+		examCollectionDao = ExamCollectionDao.getInstance();
+	}
+	
+	public static ExamController getInstance(){
+		if (examController == null){
+			examController = new ExamController();
+		}
+		return examController; 
+	}
+	
+	public void startExam(int id){
+		exam = (Exam) examCollectionDao.findById(id);
+		examTimer = exam.getTimer();
+		exam.randomize();
+		System.out.println("Starting Exam");
+		System.out.println(exam.getNextQuestion());
+	}
+}

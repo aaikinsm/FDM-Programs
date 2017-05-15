@@ -1,0 +1,87 @@
+package com.fdmgroup.model;
+
+import java.util.ArrayList;
+
+import com.fdmgroup.dao.ExamCollectionDao;
+
+public class Exam implements IStorable {
+
+	private int id, currentIndex = -1;
+	private User creator;
+	private boolean isDeleted, isRandomized;
+	private ArrayList<Question> questions;
+	private int timer;
+	private ExamCollectionDao examDao = ExamCollectionDao.getInstance();
+
+	public Exam(int id, User creator, boolean isRandomized, int timer) {
+		super();
+		this.id = id;
+		this.creator = creator;
+		this.isRandomized = isRandomized;
+		this.timer = timer;
+		questions = new ArrayList<>();
+		
+	}
+
+	public Exam(int id) {
+		super();
+		this.id = id;
+	}
+
+	public int getTimer() {
+		return timer;
+	}
+
+	public void setTimer(int timer) {
+		this.timer = timer;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public void addQuestion(Question q) {
+		questions.add(q);
+	}
+
+	public void removeQuestion(Question q) {
+		questions.remove(q);
+	}
+
+	public void randomize() {
+		if (isRandomized) {
+			ArrayList<Question> randQuestions = new ArrayList<>();
+			int size = questions.size();
+			for (int i = 0; i < size; i++) {
+				int num = (int) (Math.random() * questions.size());
+				randQuestions.add(questions.get(num));
+				questions.remove(num);
+			}
+			questions = randQuestions;
+		}
+	}
+
+	public Question getNextQuestion() {
+		currentIndex++;
+		if (currentIndex >= questions.size())
+			return null;
+		else
+			return (questions.get(currentIndex));
+	}
+
+	public void setDeleted(boolean yes) {
+		if (yes && !isDeleted) {
+			examDao.deleteExam(this);
+			isDeleted = true;
+		}
+		if (!yes && isDeleted) {
+			examDao.recoverExam(this);
+			isDeleted = false;
+		}
+	}
+
+}

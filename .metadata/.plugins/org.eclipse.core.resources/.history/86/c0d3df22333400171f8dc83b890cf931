@@ -1,0 +1,71 @@
+package com.fdmgroup.dao;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import com.fdmgroup.model.Exam;
+import com.fdmgroup.model.Result;
+import com.fdmgroup.model.User;
+
+public class ExamCollectionDao {
+	private List<Exam> examList;
+	private List<Exam> deletedExamList ;
+	private List<Result> resultList;
+	private Map<Exam,ArrayList<Result>> resultsToExam;
+	private Map<User,ArrayList<Result>> resultsForUser;
+	private static ExamCollectionDao examCollectionDao = null;
+	
+	
+	private ExamCollectionDao() {
+		super();
+		examList = new ArrayList<>();
+		deletedExamList = new ArrayList<>();
+		resultList = new ArrayList<>();
+		resultsToExam = new HashMap<>();
+		resultsForUser = new HashMap<>();
+	}
+
+	public static ExamCollectionDao getInstance(){
+		if (examCollectionDao == null){
+			examCollectionDao = new ExamCollectionDao();
+		}
+		return examCollectionDao;
+	}
+	
+	public boolean isExamAccessibleToUser(int examID, int userID){
+		//:Todo
+		return false;
+	}
+	
+	public ArrayList<Result> getExamResults(Exam exam){
+		return resultsToExam.get(exam);
+	}
+	
+	public void submitResult(Exam exam, Result result){
+		ArrayList<Result> rslt = resultsToExam.get(exam);
+		rslt.add(result);
+		resultsToExam.put(exam, rslt);
+	}
+	
+	public Result getUserResult(User user, Exam exam){
+		ArrayList<Result> rslt = resultsForUser.get(user);
+		for (Result result : rslt) {
+			if(result.getExam() == exam){
+				return result;
+			}
+		}
+		return null;
+	}
+	
+	public void deleteExam(Exam exam){
+		deletedExamList.add(exam);
+		examList.remove(exam);
+	}
+	
+	public void recoverExam(Exam exam){
+		examList.add(exam);
+		deletedExamList.remove(exam);
+	}
+}

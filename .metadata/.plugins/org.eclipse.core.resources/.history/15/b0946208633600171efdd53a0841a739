@@ -1,0 +1,30 @@
+package com.fdmgroup;
+
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
+import javax.persistence.Persistence;
+
+import com.fdmgroup.model.User;
+import com.fdmgroup.model.UserProfile;
+
+public class JpaApp {
+
+	public static void main(String[] args) {
+		EntityManagerFactory emf = Persistence.createEntityManagerFactory("JPASample");
+		EntityManager em = emf.createEntityManager();
+		EntityTransaction tr = em.getTransaction();
+		tr.begin();
+		
+		User u1 = new User("jDoe", "1234", "John", "Doe", new UserProfile("Toronto, ON", 10, "569-989-656"));
+		
+		em.persist(u1);
+		
+		tr.commit();
+		
+		System.out.println("Objects Stored");
+		
+		em.close();
+		emf.close();
+	}
+}

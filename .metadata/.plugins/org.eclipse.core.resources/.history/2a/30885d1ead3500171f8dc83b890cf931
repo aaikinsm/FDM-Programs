@@ -1,0 +1,46 @@
+package com.fdmgroup.view;
+
+import java.awt.BorderLayout;
+import java.awt.Container;
+import java.awt.FlowLayout;
+
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JTextArea;
+
+public class ExamView extends JFrame{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
+	public static JLabel eTitle, eTimer, qCount; 
+	public static JTextArea qText; 
+	
+	public ExamView(String title){
+		eTitle = new JLabel(title);
+		eTimer = new JLabel();
+		qCount = new JLabel();
+		qText = new JTextArea();
+		
+		this.setSize(500,500);
+		this.setVisible(true);
+		this.setResizable(false);
+		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+		
+		init();
+	}
+	
+	public void init(){
+		Container container  = getContentPane();
+		container.setLayout(new BorderLayout());
+		container.add(eTitle, BorderLayout.PAGE_START);
+		container.add(qCount, BorderLayout.PAGE_END);
+		container.add(eTimer, BorderLayout.LINE_END);
+		container.add(eTitle, BorderLayout.AFTER_LINE_ENDS);
+		container.add(qText, BorderLayout.CENTER);
+		
+	}
+	
+}

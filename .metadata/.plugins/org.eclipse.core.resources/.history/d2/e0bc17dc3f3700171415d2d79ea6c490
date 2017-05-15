@@ -1,0 +1,168 @@
+package com.fdmgroup.model;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
+
+@Entity
+@Table(name = "OE_EXAM")
+@NamedQueries({
+	@NamedQuery(name = "Exam.findAll", query = "Select e from Exam e")
+})
+public class Exam implements IStorable {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "exam_id")
+	private int id;	
+	@Column
+	private int timer;
+	@Column
+	private String title;
+	@Column
+	private boolean isRandomized;
+	@Column
+	private boolean isDeleted;
+	@ManyToOne
+	private User creator;
+	@Embedded
+	private List<Question> questions;
+	@OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+	private List<Result> results;
+	
+	
+	private int currentIndex = -1;
+
+	
+	public Exam(User creator) {
+		super();
+		this.creator = creator;
+		timer = 60;
+		title = "";
+	}
+
+	public Exam(int timer, String title, boolean isRandomized, User creator) {
+		super();
+		this.timer = timer;
+		this.title = title;
+		this.isRandomized = isRandomized;
+		this.creator = creator;
+	}
+
+	public Exam(int id) {
+		super();
+		this.id = id;
+	}
+
+	public int getTimer() {
+		return timer;
+	}
+
+	public void setTimer(int timer) {
+		this.timer = timer;
+	}
+	
+	public int getNumOfQuestions(){
+		return questions.size();
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public void addQuestion(Question q) {
+		questions.add(q);
+	}
+
+	public void removeQuestion(Question q) {
+		questions.remove(q);
+	}
+
+	public void randomize() {
+		if (isRandomized) {
+			ArrayList<Question> randQuestions = new ArrayList<>();
+			int size = questions.size();
+			for (int i = 0; i < size; i++) {
+				int num = (int) (Math.random() * questions.size());
+				randQuestions.add(questions.get(num));
+				questions.remove(num);
+			}
+			questions = randQuestions;
+		}
+	}
+
+	public Question getNextQuestion() {
+		currentIndex++;
+		if (currentIndex >= questions.size())
+			return null;
+		else
+			return (questions.get(currentIndex));
+	}
+
+	public void setDeleted(boolean state) {
+		isDeleted = state;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public User getCreator() {
+		return creator;
+	}
+
+	public void setCreator(User creator) {
+		this.creator = creator;
+	}
+
+	public boolean isRandomized() {
+		return isRandomized;
+	}
+
+	public void setRandomized(boolean isRandomized) {
+		this.isRandomized = isRandomized;
+	}
+
+	public List<Question> getQuestions() {
+		return questions;
+	}
+
+	public void setQuestions(List<Question> questions) {
+		this.questions = questions;
+	}
+
+	public boolean isDeleted() {
+		return isDeleted;
+	}
+	
+	public List<Result> getResults() {
+		return results;
+	}
+
+	public void setResults(List<Result> results) {
+		this.results = results;
+	}
+
+}

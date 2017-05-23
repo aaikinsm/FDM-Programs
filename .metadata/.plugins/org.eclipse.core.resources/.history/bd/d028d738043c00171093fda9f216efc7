@@ -1,0 +1,81 @@
+package com.fdmgroup.view;
+
+import java.awt.BorderLayout;
+import java.awt.Container;
+import java.awt.FlowLayout;
+import java.awt.GridLayout;
+
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JTextField;
+import javax.swing.SpringLayout;
+
+public class CreateExamView extends JFrame{
+
+
+	private static final long serialVersionUID = 1L;
+	
+	JLabel heading;
+	JTextField questionText;
+	JTextField ans1;
+	JTextField ans2;
+	JTextField ans3;
+	JTextField ans4;
+	JButton addQButton;
+	JButton doneButton;
+	
+	public CreateExamView(){
+		this.setSize(500,300);
+		init();
+		this.setVisible(true);
+		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+	}
+
+	private void init() {
+		heading = new JLabel("Enter the exam information below.");
+		questionText = new JTextField();
+		ans1 = new JTextField();
+		ans2 = new JTextField();
+		ans3 = new JTextField();
+		ans4 = new JTextField();
+		addQButton = new JButton("Add another question");
+		doneButton = new JButton("DONE");
+		
+		Container container  = getContentPane();
+		container.setLayout(new BoxLayout(container,BoxLayout.PAGE_AXIS));
+		Container innerContainerQ = new Container();
+		Container innerContainerA = new Container();
+		Container innerContainerB = new Container();
+		Container innerContainerC = new Container();
+		Container innerContainerD = new Container();
+		innerContainerQ.setLayout(new BorderLayout());
+		innerContainerA.setLayout(new FlowLayout());
+		innerContainerB.setLayout(new FlowLayout());
+		innerContainerC.setLayout(new FlowLayout());
+		innerContainerD.setLayout(new FlowLayout());
+		
+		container.add(heading);
+		innerContainerQ.add(new JLabel("Question:"), BorderLayout.LINE_START);
+		innerContainerQ.add(questionText);
+		innerContainerA.add(new JLabel("Answer (a):"), BorderLayout.CENTER);
+		innerContainerA.add(ans1);
+		innerContainerB.add(new JLabel("Answer (b):"));
+		innerContainerB.add(ans2);
+		innerContainerC.add(new JLabel("Answer (c):"));
+		innerContainerC.add(ans3);
+		innerContainerD.add(new JLabel("Answer (d):"));
+		innerContainerD.add(ans4);
+		container.add(innerContainerQ);
+		container.add(innerContainerA);
+		container.add(innerContainerB);
+		container.add(innerContainerC);
+		container.add(innerContainerD);
+		container.add(addQButton);
+		container.add(doneButton);
+	}
+	
+	
+	
+}

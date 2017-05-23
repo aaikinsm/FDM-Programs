@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>JavaScript Example</title>
+	</head>
+	<body>
+		<h1>JavaScript Example</h1>
+		<script type="text/javascript">
+			function printEvenNumbers(min,max){
+				var text = "";
+				for (i = min; i < max; i++) {
+					if(i%2 == 0){
+						text += i+", ";
+					}
+				}
+				document.write(text);
+			}
+			printEvenNumbers(10, 48);
+		</script>
+	</body>
+</html>

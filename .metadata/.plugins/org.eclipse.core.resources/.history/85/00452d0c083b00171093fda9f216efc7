@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>JavaScript Example</title>
+		<script type="text/javascript">
+			alert("This is a test");
+		</script>
+	</head>
+	<body>
+		<h1>JavaScript Example</h1>
+	</body>
+</html>

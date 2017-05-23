@@ -1,0 +1,31 @@
+P{
+		color: blue;
+}
+div{ 
+		font-family: fantasy;
+		font_size: x-large;
+		colour: red;
+}
+
+#para1{
+	font_size: x-large;
+	text-align: center;
+	background-color: #BBCCFF;
+}
+
+a:LINK{
+	colour: #AA99CC;
+}
+a:VISITED {
+	colour: #0D3;
+}
+a:HOVER {
+	colour: #BB77CC;
+}
+a:ACTIVE {
+	colour: #ABC;
+}
+	
+#para1:hover{
+	background-color: #ff0080;
+}

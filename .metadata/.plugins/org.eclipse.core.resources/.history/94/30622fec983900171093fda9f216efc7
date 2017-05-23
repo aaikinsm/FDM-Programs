@@ -1,0 +1,16 @@
+P{
+		color: blue;
+}
+div{ 
+		font-family: fantasy;
+		font_size: x-large;
+		colour: red;
+}
+
+#para1{
+	font_size: x-large;
+	text-align: center;
+	background-color: #BBCCFF;
+}
+	
+		

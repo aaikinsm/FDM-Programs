@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>JavaScript Example</title>
+		<link rel="stylesheet" type="text/css" href="resources/css/style.css"/>
+		<script type="text/javascript" src="resources/js/myJavascript.js"></script>
+	</head>
+	<body>
+		<h1>JavaScript Example</h1>
+		<script type="text/javascript">printEvenNumbers(10, 64);</script>
+		<br><br><br>
+		<form id="form1" method="get" action="http://www.google.ca/search">
+			Query: <input type="text" id="query" name="q"><br/>
+			<input type="submit" value="search">
+		</form>
+		<br/>
+		<div id="div1">
+			<p>This is a paragraph.</p>
+		</div>
+	</body>
+</html>

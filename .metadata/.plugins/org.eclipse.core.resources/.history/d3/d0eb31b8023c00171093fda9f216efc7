@@ -1,0 +1,62 @@
+package com.fdmgroup.view;
+
+import java.awt.Container;
+import java.awt.FlowLayout;
+
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JTextField;
+
+public class CreateExamView extends JFrame{
+
+
+	private static final long serialVersionUID = 1L;
+	
+	JLabel heading;
+	JTextField questionText;
+	JTextField ans1;
+	JTextField ans2;
+	JTextField ans3;
+	JTextField ans4;
+	JButton addQButton;
+	JButton doneButton;
+	
+	public CreateExamView(){
+		this.setSize(500,300);
+		init();
+		this.setVisible(true);
+		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+	}
+
+	private void init() {
+		heading = new JLabel("Enter the exam information below.");
+		questionText = new JTextField();
+		ans1 = new JTextField();
+		ans2 = new JTextField();
+		ans3 = new JTextField();
+		ans4 = new JTextField();
+		addQButton = new JButton("Add another question");
+		doneButton = new JButton("DONE");
+		
+		Container container  = getContentPane();
+		container.setLayout(new BoxLayout(container,BoxLayout.PAGE_AXIS));
+		container.add(heading);
+		container.add(new JLabel("Question"));
+		container.add(questionText);
+		container.add(new JLabel("Answer (a)"));
+		container.add(ans1);
+		container.add(new JLabel("Answer (b)"));
+		container.add(ans2);
+		container.add(new JLabel("Answer (c)"));
+		container.add(ans3);
+		container.add(new JLabel("Answer (d)"));
+		container.add(ans4);
+		container.add(addQButton);
+		container.add(doneButton);
+	}
+	
+	
+	
+}

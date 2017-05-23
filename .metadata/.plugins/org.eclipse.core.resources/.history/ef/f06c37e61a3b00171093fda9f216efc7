@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>jQuery Example</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="resources/js/myjq.js"></script>
+</head>
+<body>
+	<h1>jQuery Example</h1>
+	<p id = "para1">This is my paragraph</p>
+	<button id="b1">Hide</button>
+	<br/>
+	<div id="div1">
+		<img alt="A picture of an apple" src="resources/imgs/Apple.png" width="15%"/>
+	</div>
+</body>
+</html>

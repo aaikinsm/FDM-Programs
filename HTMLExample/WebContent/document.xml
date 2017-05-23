@@ -1,0 +1,44 @@
+<?xml version="1.0" ?>
+
+<!--define the location of the external DTD using a relative URL address -->
+<!DOCTYPE document SYSTEM "subjects.dtd">
+
+<documents>
+	<document>
+		<title>Artificial Intelligence</title>
+		<subjectID>2.303</subjectID>
+		<subjectname>Computer Science</subjectname>
+		<prerequisite>
+			<subjectID>1.001</subjectID>
+			<subjectname>Algorithm Design</subjectname>
+		</prerequisite>
+		<classes>4 hours per week (lectures and tutorials) for one semester.</classes>
+		<assessment assessment_type="exam">2hr exam at the end of the course.</assessment>
+		<syllabus>
+			AI theory.
+		</syllabus>
+		<textbooks>
+			<author>Stuart J. Russell</author>
+			<author>Peter Norvig</author>
+			<booktitle>Artificial Intelligence: A Modern Approach</booktitle>
+		</textbooks>
+	</document>
+	<document>
+		<title>Introduction to Programming in Java</title>
+		<subjectID>3.045</subjectID>
+		<subjectname>Computer Science</subjectname>
+		<prerequisite>
+			<subjectID>1.021</subjectID>
+			<subjectname>C++</subjectname>
+		</prerequisite>
+		<classes>4 hours per week (lectures and tutorials) for one semester.</classes>
+		<assessment assessment_type="assignment">tutorial assignments.</assessment>
+		<syllabus>
+			Introduction to Java.
+		</syllabus>
+		<textbooks>
+			<author>James Gosling</author>
+			<booktitle>Java Programming Language 5th Edition</booktitle>
+		</textbooks>
+	</document>
+</documents>

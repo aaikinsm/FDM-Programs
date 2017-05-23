@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+targetNamespace="http://www.fdmgoup.com"
+elementFormDefault="qualified">
+	
+<xs:element name="books">
+	<xs:complexType>
+		<xs:sequence>
+			<xs:element name="book" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="title" type="xs:string" maxOccurs="1"/>
+						<xs:element name="author" type="xs:string" maxOccurs="unbounded"/>
+						<xs:element name="year">
+							<xs:simpleType>
+								<xs:restriction base="xs:integer">
+									<xs:minInclusive value="1900"/>
+									<xs:maxInclusive value="2017"/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:element>
+						<xs:element name="price" type="xs:decimal" maxOccurs="1"/>
+					</xs:sequence>
+					<xs:attribute name="category" type="xs:string" use="required" />
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>		
+	</xs:complexType>	
+</xs:element>
+</xs:schema>

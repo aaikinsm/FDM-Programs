@@ -22,7 +22,8 @@ import javax.persistence.Transient;
 @Entity
 @Table(name = "OE_EXAM")
 @NamedQueries({
-	@NamedQuery(name = "exam.findAll", query = "Select e from Exam e")
+	@NamedQuery(name = "exam.findAll", query = "Select e from Exam e"),
+	@NamedQuery(name = "exam.findAllByCreator", query = "Select e from Exam e where e.creator = :ecreator")
 })
 public class Exam implements IStorable {
 
@@ -37,19 +38,23 @@ public class Exam implements IStorable {
 	@Column
 	private String title;
 	
-	@Column
-	private boolean isRandomized;
+	@Column(name = "is_randomized")
+	private int isRandomized;
 	
-	@Column
-	private boolean isDeleted;
+	@Column(name = "is_deleted")
+	private int isDeleted;
 	
 	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
 	private User creator;
 	
-	@Embedded
+	@OneToMany(mappedBy = "exam")
 	private List<Question> questions;
-	//@OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
-	//private List<Result> results;
+	
+	@OneToMany(mappedBy = "exam")
+	private List<Result> results;
+	
+	@ManyToOne
+	private Course course;
 	
 	@Transient
 	private int currentIndex = -1;
@@ -66,7 +71,7 @@ public class Exam implements IStorable {
 		questions = new ArrayList<>();
 	}
 
-	public Exam(int timer, String title, boolean isRandomized, User creator) {
+	public Exam(int timer, String title, int isRandomized, User creator) {
 		super();
 		this.timer = timer;
 		this.title = title;
@@ -103,8 +108,16 @@ public class Exam implements IStorable {
 		questions.remove(q);
 	}
 
+	public Question getNextQuestion() {
+		currentIndex++;
+		if (currentIndex >= questions.size())
+			return null;
+		else
+			return (questions.get(currentIndex));
+	}
+
 	public void randomize() {
-		if (isRandomized) {
+		if (isRandomized==1) {
 			ArrayList<Question> randQuestions = new ArrayList<>();
 			int size = questions.size();
 			for (int i = 0; i < size; i++) {
@@ -116,15 +129,7 @@ public class Exam implements IStorable {
 		}
 	}
 
-	public Question getNextQuestion() {
-		currentIndex++;
-		if (currentIndex >= questions.size())
-			return null;
-		else
-			return (questions.get(currentIndex));
-	}
-
-	public void setDeleted(boolean state) {
+	public void setDeleted(int state) {
 		isDeleted = state;
 	}
 
@@ -144,11 +149,11 @@ public class Exam implements IStorable {
 		this.creator = creator;
 	}
 
-	public boolean isRandomized() {
+	public int isRandomized() {
 		return isRandomized;
 	}
 
-	public void setRandomized(boolean isRandomized) {
+	public void setRandomized(int isRandomized) {
 		this.isRandomized = isRandomized;
 	}
 
@@ -160,7 +165,7 @@ public class Exam implements IStorable {
 		this.questions = questions;
 	}
 
-	public boolean isDeleted() {
+	public int isDeleted() {
 		return isDeleted;
 	}
 
@@ -186,11 +191,20 @@ public class Exam implements IStorable {
 		return true;
 	}
 	
-	/*public List<Result> getResults() {
+	
+	public List<Result> getResults() {
 		return results;
 	}
 
 	public void setResults(List<Result> results) {
 		this.results = results;
-	}*/
+	}
+
+	public Course getCourse() {
+		return course;
+	}
+
+	public void setCourse(Course course) {
+		this.course = course;
+	}
 }

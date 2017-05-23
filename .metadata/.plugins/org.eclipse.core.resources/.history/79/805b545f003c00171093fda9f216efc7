@@ -1,0 +1,54 @@
+package com.fdmgroup.view;
+
+import java.awt.FlowLayout;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JTextField;
+
+public class CreateExamView extends JFrame{
+
+
+	private static final long serialVersionUID = 1L;
+	
+	JLabel heading;
+	JTextField questionText;
+	JTextField ans1;
+	JTextField ans2;
+	JTextField ans3;
+	JTextField ans4;
+	JButton addQButton;
+	JButton doneButton;
+	
+	public CreateExamView(){
+		this.setSize(500,300);
+		init();
+		this.setVisible(true);
+		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+	}
+
+	private void init() {
+		heading = new JLabel("Enter the exam information below.");
+		questionText = new JTextField();
+		ans1 = new JTextField();
+		ans2 = new JTextField();
+		ans3 = new JTextField();
+		ans4 = new JTextField();
+		addQButton = new JButton("Add another question");
+		doneButton = new JButton("DONE");
+		
+		this.setLayout(new FlowLayout());
+		this.add(heading);
+		this.add(questionText);
+		this.add(ans1);
+		this.add(ans2);
+		this.add(ans3);
+		this.add(ans4);
+		this.add(addQButton);
+		this.add(doneButton);
+	}
+	
+	
+	
+}

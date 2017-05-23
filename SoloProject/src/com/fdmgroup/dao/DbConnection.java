@@ -9,6 +9,7 @@ public class DbConnection {
 	private static DbConnection connection = null;
 	private EntityManager em;
 	private EntityManagerFactory emf;
+	
 	private DbConnection(){
 		init();
 	}

@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -27,7 +28,7 @@ public class User implements IStorable{
 	@Column(name = "user_id")
 	private int id;
 	
-	@Transient
+	@Column
 	private int role;
 	
 	@Column(nullable = false, unique = true, length = 50)
@@ -44,6 +45,12 @@ public class User implements IStorable{
 	
 	@OneToMany(mappedBy = "creator")
 	private List<Exam> exams;
+	
+	@OneToMany(mappedBy = "user")
+	private List<Result> results;
+	
+	@ManyToOne
+	private Course course;
 	
 	public List<Exam> getExams() {
 		return exams;
@@ -67,7 +74,7 @@ public class User implements IStorable{
 		this.lastName = lastName;
 	}
 
-	public User(int role, String username, String password, String firstName, String lastName) {
+	public User(String username, String password, String firstName, String lastName) {
 		super();
 		this.username = username;
 		this.password = password;
@@ -121,6 +128,14 @@ public class User implements IStorable{
 
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
+	}
+
+	public Course getCourse() {
+		return course;
+	}
+
+	public void setCourse(Course course) {
+		this.course = course;
 	}
 
 	@Override

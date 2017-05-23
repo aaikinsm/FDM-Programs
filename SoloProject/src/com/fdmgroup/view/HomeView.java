@@ -38,8 +38,7 @@ public class HomeView {
 			showRegister();
 			break;
 		case "3":
-			ExamController.getInstance().createExam();
-			ExamController.getInstance().startExam(1);
+			new CreateExamView();
 			break;
 		default: 
 			System.out.println("Invalid option");
@@ -78,25 +77,82 @@ public class HomeView {
 		HomeController.getInstance().doRegister(username,password,firstname,lastname);
 	}
 	
-	public void showDashboard(){
-		System.out.println("This is your dashboard");
-		System.out.println("Welcome "+SessionUser.getLoggedInUser().getFirstName()+" "+SessionUser.getLoggedInUser().getLastName());
-		System.out.println("Press 1 to logout");
+	
+	public void showStudentDashboard(){
+		System.out.println("*** Welcome "+SessionUser.getLoggedInUser().getFirstName()
+				+" "+SessionUser.getLoggedInUser().getLastName()+" ***");
+		System.out.println("This is your Student dashboard");
+		System.out.println("Press 1 to logout \nPress 2 to view available exams \n"
+				+ "Press 3 to view your exam results");
 		String option = scanner.nextLine();
 		switch (option){
 		case "1":
 			HomeController.getInstance().doLogout();
 			break;
+		case "2":
+			ExamController.getInstance().viewExams(0);
+			break;
 		case "3":
-			ExamController.getInstance().createExam();
-			ExamController.getInstance().startExam(1);
+			ExamController.getInstance().viewUserResults(SessionUser.getLoggedInUser());
 			break;
 		default:
-			showDashboard();
+			showStudentDashboard();
+			break;
+		}
+		
+	}
+
+	public void showTeacherDashboard(){
+		System.out.println("*** Welcome "+SessionUser.getLoggedInUser().getFirstName()
+				+" "+SessionUser.getLoggedInUser().getLastName()+" ***");
+		System.out.println("This is your Teacher dashboard");
+		System.out.println("Press 1 to logout \nPress 2 to view all exams"
+				+ "Press 2 to create exams \nPress 4 to view exam results.........");
+		String option = scanner.nextLine();
+		switch (option){
+		case "1":
+			HomeController.getInstance().doLogout();
+			break;
+		case "2":
+			ExamController.getInstance().viewExams(0);
+			break;
+		case "3":
+			ExamController.getInstance().createExam();
+			break;
+		case "4":
+			ExamController.getInstance().viewExamResults(SessionUser.getLoggedInUser());
+			break;
+		default:
+			showStudentDashboard();
 			break;
 		}
 		
 	}
 	
+	
+	public void showAdminDashboard(){
+		//TODO: Implement course management
+		System.out.println("*** Welcome "+SessionUser.getLoggedInUser().getFirstName()
+				+" "+SessionUser.getLoggedInUser().getLastName()+" ***");
+		System.out.println("This is your Administrator dashboard");
+		System.out.println("Press 1 to logout \nPress 2 to create exams \n"
+				+ "Press 3 to view your exam results");
+		String option = scanner.nextLine();
+		switch (option){
+		case "1":
+			HomeController.getInstance().doLogout();
+			break;
+		case "2":
+			ExamController.getInstance().createExam();
+			break;
+		case "3":
+			ExamController.getInstance().viewExamResults(SessionUser.getLoggedInUser());
+			break;
+		default:
+			showStudentDashboard();
+			break;
+		}
+		
+	}
 
 }

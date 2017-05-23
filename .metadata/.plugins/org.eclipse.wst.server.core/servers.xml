@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<servers>
+  <server hostname="localhost" id="HTTP Preview at localhost" name="HTTP Preview at localhost" runtime-id="HTTP Preview" server-type="org.eclipse.wst.server.preview.server" server-type-id="org.eclipse.wst.server.preview.server" start-timeout="240" stop-timeout="240" timestamp="1">
+    <list key="modules" value0="HTMLExample::org.eclipse.wst.web.internal.deployables.static:HTMLExample::wst.web::1.0"/>
+  </server>
+</servers>

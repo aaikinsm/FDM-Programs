@@ -14,9 +14,6 @@ import javax.swing.JTextArea;
 
 public class ExamView extends JFrame{
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	
 	public JLabel eTitle, eTimer, qCount; 
@@ -30,16 +27,19 @@ public class ExamView extends JFrame{
 		qCount = new JLabel();
 		qText = new JTextArea();
 		button = new Button("START");
+
+		qText.setWrapStyleWord(true);
+		qText.setLineWrap(true);
+		
 		this.setTitle(title);
-		this.setSize(400,200);
+		this.setSize(500,300);
+		init();
 		this.setVisible(true);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		
-		init();
 	}
 	
 	public void init(){
-		
 		
 		selections = new CheckboxGroup();
 		Checkbox cbA = new Checkbox("a"); 

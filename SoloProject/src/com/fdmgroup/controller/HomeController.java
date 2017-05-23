@@ -3,7 +3,11 @@ package com.fdmgroup.controller;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
+import com.fdmgroup.dao.ExamCollectionDao;
 import com.fdmgroup.dao.UserCollectionDao;
+import com.fdmgroup.model.Course;
+import com.fdmgroup.model.Exam;
+import com.fdmgroup.model.Question;
 import com.fdmgroup.model.SessionUser;
 import com.fdmgroup.model.User;
 import com.fdmgroup.view.HomeView;
@@ -18,8 +22,9 @@ public class HomeController {
 	private HomeController() {
 		super();
 		userDao = UserCollectionDao.getInstance();
+		
 	}
-	
+
 	public static HomeController getInstance(){
 		if (homeController == null){
 			homeController = new HomeController();
@@ -34,13 +39,13 @@ public class HomeController {
 
 	public void doRegister(String username, String password, String firstname, String lastname) {
 
-		User u = new User(1, username,password,firstname, lastname);
+		User u = new User(username,password,firstname, lastname);
 		User createdUser = userDao.create(u);
 		
 		if (createdUser != null){
 			System.out.println("Registration successful.");
 			SessionUser.setLoggedInUser(createdUser);
-			HomeView.getInstance().showDashboard();
+			HomeView.getInstance().showStudentDashboard();
 		}else{
 			System.out.println("Error registration not successful");
 			HomeView.getInstance().displayOptions();
@@ -52,7 +57,12 @@ public class HomeController {
 		User foundUser = userDao.findByUsername(username);
 		if (foundUser != null && foundUser.getPassword().equals(password)){
 			SessionUser.setLoggedInUser(foundUser);
-			HomeView.getInstance().showDashboard();
+			if(foundUser.getRole() == 0)
+				HomeView.getInstance().showStudentDashboard();
+			else if(foundUser.getRole() == 1)
+				HomeView.getInstance().showTeacherDashboard();
+			else if(foundUser.getRole() == 2)
+				HomeView.getInstance().showAdminDashboard();
 		}else{
 			System.out.println("Username/password is wrong");
 			HomeView.getInstance().displayOptions();

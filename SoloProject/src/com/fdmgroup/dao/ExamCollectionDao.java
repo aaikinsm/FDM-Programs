@@ -9,22 +9,19 @@ import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 
 import com.fdmgroup.model.Exam;
+import com.fdmgroup.model.Question;
 import com.fdmgroup.model.Result;
 import com.fdmgroup.model.User;
 
 public class ExamCollectionDao implements IStorage<Exam>{
-	private List<Result> resultList;
-	private Map<Exam,ArrayList<Result>> resultsToExam;
-	private Map<User,ArrayList<Result>> resultsForUser;
 	private static ExamCollectionDao examCollectionDao = null;
 	private DbConnection connection = null;
+	EntityManager em = null;
 	
 	private ExamCollectionDao() {
 		super();
-		resultList = new ArrayList<>();
-		resultsToExam = new HashMap<>();
-		resultsForUser = new HashMap<>();
 		connection = DbConnection.getInstance();
+		em = connection.getEntityManager();
 	}
 
 	public static ExamCollectionDao getInstance(){
@@ -33,93 +30,88 @@ public class ExamCollectionDao implements IStorage<Exam>{
 		}
 		return examCollectionDao;
 	}
-	
-	public boolean isExamAccessibleToUser(int examID, int userID){
-		//:TODO
-		return false;
-	}
-	
-	public ArrayList<Result> getExamResults(Exam exam){
-		//:TODO
-		return resultsToExam.get(exam);
-	}
-	
-	public void submitResult(Exam exam, Result result){
-		//:TODO
-		ArrayList<Result> rslt = resultsToExam.get(exam);
-		rslt.add(result);
-		resultsToExam.put(exam, rslt);
-	}
-	
-	public Result getUserResult(User user, Exam exam){
-		//:TODO
-		ArrayList<Result> rslt = resultsForUser.get(user);
-		for (Result result : rslt) {
-			if(result.getExam() == exam){
-				return result;
-			}
+
+	public List<Result> getExamResults(User user){
+		TypedQuery<Exam> queryE = em.createNamedQuery("exam.findAllByCreator",Exam.class);
+		queryE.setParameter("ecreator", user);
+		List<Exam> allCreatedExams = queryE.getResultList();
+		List<Result> combinedResults = new ArrayList<>();
+		for (Exam exam2 : allCreatedExams) {
+			TypedQuery<Result> query = em.createNamedQuery("result.findExamResults",Result.class);
+			query.setParameter("rexam", exam2);
+			combinedResults.addAll(query.getResultList());			
 		}
-		return null;
+		return combinedResults;
+	}	
+	
+	public List<Result> getUserResults(User user){
+		TypedQuery<Result> query = em.createNamedQuery("result.findUserResults",Result.class);
+		query.setParameter("ruser", user);
+		return query.getResultList();
 	}
 
 	@Override
 	public Exam findById(int id) {
-		EntityManager em = connection.getEntityManager();
 		Exam foundExam = em.find(Exam.class, id);
-		em.close();
-		if (foundExam.isDeleted()) return null;
+		if (foundExam.isDeleted()==1) 
+			return null;		
 		return foundExam;
 	}
 
 	@Override
 	public List<Exam> findAll() {
-		EntityManager em = connection.getEntityManager();
 		TypedQuery<Exam> query = em.createNamedQuery("exam.findAll",Exam.class);
 		return query.getResultList();
 	}
 
 	@Override
 	public Exam create(Exam exam) {
-		EntityManager em = connection.getEntityManager();
-		em.getTransaction().begin();
+		if(!em.getTransaction().isActive())
+			em.getTransaction().begin();
 		em.persist(exam);
+		for (Question q : exam.getQuestions()) {
+			q.setExam(exam);
+			em.persist(q);
+		}
 		em.getTransaction().commit();
-		em.close();
 		return exam;
 	}
 
 	@Override
 	public Exam update(Exam e) {
-		EntityManager em = connection.getEntityManager();
 		Exam exam = findById(e.getId());
 		if(exam != null){
-			em.getTransaction().begin();
+			if(!em.getTransaction().isActive())
+				em.getTransaction().begin();
 			if (!exam.getTitle().equals("")){
 				exam.setTitle(exam.getTitle());
-			}
-			if (exam.getQuestions() != null){
-				exam.setQuestions(exam.getQuestions());
 			}
 			exam.setDeleted(exam.isDeleted());
 			exam.setRandomized(exam.isRandomized());
 			exam.setTimer(exam.getTimer());
 			em.getTransaction().commit();
 		}
-		em.close();
 		return exam;
 	}
 
 	@Override
 	public boolean delete(Exam e) {
-		EntityManager em = connection.getEntityManager();
 		Exam exam = findById(e.getId());
 		if(exam == null)
 			return false;
-		em.getTransaction().begin();
-		exam.setDeleted(true);
+		if(!em.getTransaction().isActive())
+			em.getTransaction().begin();
+		exam.setDeleted(1);
 		em.getTransaction().commit();
-		em.close();
 		return true;
+	}
+	
+	public Result addResult(Result result) {
+		if(!em.getTransaction().isActive())
+			em.getTransaction().begin();
+		em.persist(result);
+		em.getTransaction().commit();
+		return result;
 	}
 
 }

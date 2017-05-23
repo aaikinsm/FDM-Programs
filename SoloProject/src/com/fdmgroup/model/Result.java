@@ -1,18 +1,50 @@
 package com.fdmgroup.model;
 
-import java.util.ArrayList;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
 
+@Entity
+@Table(name = "OE_RESULT")
+@NamedQueries({
+	@NamedQuery(name = "result.findExamResults", query = "Select r from Result r where r.exam = :rexam"),
+	@NamedQuery(name = "result.findUserResults", query = "Select r from Result r where r.user = :ruser")
+})
 public class Result {
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "result_id")
 	private int resultId;
-	private Exam exam;
-	private User user;
-	private ArrayList<Boolean> resultData = new ArrayList<>();
+	
+	@Column
 	private int passMark = 50;
+	
+	@Column
+	private int correct = 0;
+	
+	@Column
+	private int total = 0;
+	
+	@ManyToOne
+	private User user;
+	
+	@ManyToOne
+	private Exam exam;
 
-	public Result(int resultId, Exam exam, User user) {
+	
+	public Result() {
 		super();
-		this.resultId = resultId;
+	}
+
+	public Result(Exam exam, User user) {
+		super();
 		this.exam = exam;
 		this.user = user;
 	}
@@ -25,12 +57,10 @@ public class Result {
 		return user;
 	}
 
-	public ArrayList<Boolean> getResultData() {
-		return resultData;
-	}
-
 	public void addResultData(boolean resultData) {
-		this.resultData.add(resultData);
+		if(resultData)
+			correct++;
+		total++;
 	}
 
 	public Exam getExam() {
@@ -41,13 +71,8 @@ public class Result {
 		passMark = pass;
 	}
 	
-	public float calculateResult(){
-		float mark = 0;
-		for (Boolean ans : resultData) {
-			if (ans == true)
-				mark++;
-		}
-		return mark/resultData.size()*100;
+	public int calculateResult(){
+		return correct*100/total;
 	}
 	
 	public boolean passed(){

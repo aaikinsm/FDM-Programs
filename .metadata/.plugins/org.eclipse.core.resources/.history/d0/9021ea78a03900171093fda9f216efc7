@@ -1,0 +1,57 @@
+P{
+		color: blue;
+}
+div{ 
+		font-family: fantasy;
+		font_size: x-large;
+		color: red;
+}
+
+/* #div1{
+	position: fixed;
+	bottom: 0px;
+	top: 300px;
+} */
+
+#para1{
+	font_size: x-large;
+	text-align: center;
+	background-color: #BBCCFF;
+}
+
+a:LINK{
+	color: #AA99CC;
+}
+a:VISITED {
+	color: #0D3;
+}
+a:HOVER {
+	color: #BB77CC;
+}
+a:ACTIVE {
+	color: #ABC;
+}
+	
+#para1:hover{
+	background-color: #ff0080;
+}
+
+p::FIRST-LETTER {
+	color: green;
+}
+
+pre::FIRST-LINE {
+	color: green;
+}
+
+h1:BEFORE {
+	content:  url(../imgs/arrow_right.png);
+}
+
+h1:AFTER {
+	content:  url(../imgs/arrow_left.png);
+}
+
+ul{
+	list-style: circle;
+}

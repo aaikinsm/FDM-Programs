@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>JavaScript Example</title>
+		<script type="text/javascript">
+			var text = "";
+			for (i = 1; i < 101 i++) {
+				text += i+", "
+			}
+			document.write(text);
+		</script>
+	</head>
+	<body>
+		<h1>JavaScript Example</h1>
+	</body>
+</html>

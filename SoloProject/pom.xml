@@ -15,18 +15,43 @@
           <target>1.8</target>
         </configuration>
       </plugin>
+      <plugin>
+        <artifactId>maven-war-plugin</artifactId>
+        <version>2.3</version>
+        <configuration>
+          <warSourceDirectory>WebContent</warSourceDirectory>
+          <failOnMissingWebXml>false</failOnMissingWebXml>
+        </configuration>
+      </plugin>
+      <plugin>
+         <groupId>org.apache.tomcat.maven</groupId>
+         <artifactId>tomcat7-maven-plugin</artifactId>
+         <version>2.2</version>
+         <configuration>
+                <url>http://localhost:8088/manager/text</url>
+                <warFile>${project.build.directory}/${project.build.finalName}.war</warFile>
+                <path>/SoloProject</path>
+                <server>deploymentRepo</server>
+         </configuration>
+     </plugin>
     </plugins>
   </build>
   <dependencies>
+  	<dependency>
+        <groupId>javax.servlet</groupId>
+        <artifactId>javax.servlet-api</artifactId>
+        <version>3.1.0</version>
+        <scope>provided</scope>
+	</dependency>
+	<dependency>
+		<groupId>javax.servlet</groupId>
+		    <artifactId>jstl</artifactId>
+		    <version>1.2</version>
+	</dependency>   
     <dependency>
         <groupId>org.hibernate</groupId>
         <artifactId>hibernate-core</artifactId>
         <version>4.3.10.Final</version>
-    </dependency>
-    <dependency>
-        <groupId>org.hibernate</groupId>
-        <artifactId>hibernate-annotations</artifactId>
-        <version>3.5.6-Final</version>
     </dependency>
     <dependency>
         <groupId>org.hibernate</groupId>
@@ -48,5 +73,11 @@
         <artifactId>ojdbc6</artifactId>
         <version>11.2.0</version>
     </dependency>
+    <dependency>
+		<groupId>org.slf4j</groupId>
+		<artifactId>slf4j-log4j12</artifactId>
+		<version>1.5.6</version>
+	</dependency>
   </dependencies>
+  <packaging>war</packaging>
 </project>

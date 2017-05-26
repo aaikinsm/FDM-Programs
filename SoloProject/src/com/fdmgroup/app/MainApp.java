@@ -1,6 +1,5 @@
 package com.fdmgroup.app;
 
-import com.fdmgroup.controller.ExamController;
 import com.fdmgroup.controller.HomeController;
 import com.fdmgroup.dao.ExamCollectionDao;
 import com.fdmgroup.dao.UserCollectionDao;
@@ -11,7 +10,7 @@ import com.fdmgroup.model.User;
 public class MainApp {
 	public static void main(String[] args) {
 		HomeController hc = HomeController.getInstance();
-		addSampleData();
+		//addSampleData();
 		hc.showHome();
 	}
 

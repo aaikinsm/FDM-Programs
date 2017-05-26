@@ -82,4 +82,12 @@ public class Result {
 			return false;
 	}
 
+	public int getCorrect() {
+		return correct;
+	}
+
+	public int getTotal() {
+		return total;
+	}
+
 }

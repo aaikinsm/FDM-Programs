@@ -42,11 +42,13 @@ public class ExamController {
 		return examController;
 	}
 
-	public void viewExams(int courseId) {
+	public List<Exam> viewExams(int courseId) {
 		if (courseId == 0) {
 			List<Exam> exams = examCollectionDao.findAll();
-			if (exams.isEmpty())
+			if (exams.isEmpty()){
 				System.out.println("There are no available exams");
+				return null;
+			}
 			else {
 				System.out.println("Enter the ID of the exam you would like to open");
 				for (Exam exam : exams) {
@@ -54,10 +56,13 @@ public class ExamController {
 				}
 				Scanner in = new Scanner(System.in);
 				int idNum = in.nextInt();
-				startExam(idNum);
+				startExam(idNum);				
+				return exams;
 			}
 		}
+		return null;
 	}
+
 	
 	public void viewUserResults(User user) {
 		List<Result> uResults =  examCollectionDao.getUserResults(user);

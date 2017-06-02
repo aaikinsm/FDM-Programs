@@ -29,6 +29,7 @@ public class AuthenticationFilter implements Filter {
     	excludeUrls.add("/login");    	  	
     	excludeUrls.add("/register");    	  	
     	excludeUrls.add("register.jsp");    	  	
+    	excludeUrls.add("/css/style.css");    	  	
     }
 
     
@@ -41,6 +42,7 @@ public class AuthenticationFilter implements Filter {
 		HttpServletRequest httpReq = (HttpServletRequest) request;
 		HttpSession session = httpReq.getSession(false);
 		if (((session == null) || session.getAttribute("user") == null) && !excludeUrls.contains(httpReq.getServletPath())){
+			System.out.println(httpReq.getServletPath()+" ---> /login.jsp");
 			RequestDispatcher rd = httpReq.getRequestDispatcher("/login.jsp");
 			rd.forward(request, response);
 			return;

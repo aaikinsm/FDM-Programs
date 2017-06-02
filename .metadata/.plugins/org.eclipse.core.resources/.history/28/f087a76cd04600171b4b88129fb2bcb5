@@ -1,0 +1,42 @@
+package com.fdmgroup.servlet;
+
+import java.io.IOException;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import com.fdmgroup.model.Question;
+import com.fdmgroup.model.User;
+
+
+@WebServlet("/create")
+public class CreateExamServlet extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+       
+	
+    public CreateExamServlet() {
+        super();
+    }
+
+
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		User user = (User) request.getSession().getAttribute("user");
+		if(user != null){
+			if(request.getParameter("question") != null){
+				Question q = new Question();
+				q.setQuestion(request.getParameter("question"));
+				q.addPossibleAnswer(request.getParameter("ansA"));
+				q.addPossibleAnswer(request.getParameter("ansB"));
+				if (request.getParameter("ansC") != null){
+					q.addPossibleAnswer(request.getParameter("ansC"));
+					if (request.getParameter("ansD") != null)
+						q.addPossibleAnswer(request.getParameter("ansD"));
+				}
+				System.out.println(q.getQuestion());
+			}
+		}
+	}
+
+}

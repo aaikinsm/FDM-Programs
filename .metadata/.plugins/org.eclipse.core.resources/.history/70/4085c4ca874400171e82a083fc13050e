@@ -1,0 +1,43 @@
+package com.fdmgroup.service;
+
+public class Messenger {
+	private String os;
+	private String version;
+	private Messaging provider;
+
+	public Messenger() {
+		super();
+	}
+
+	public Messenger(String os, String version, Messaging provider) {
+		super();
+		this.os = os;
+		this.version = version;
+		this.provider = provider;
+	}
+
+	public String getOs() {
+		return os;
+	}
+
+	public void setOs(String os) {
+		this.os = os;
+	}
+
+	public String getVersion() {
+		return version;
+	}
+
+	public void setVersion(String version) {
+		this.version = version;
+	}
+
+	public Messaging getProvider() {
+		return provider;
+	}
+
+	public void setProvider(Messaging provider) {
+		this.provider = provider;
+	}
+
+}

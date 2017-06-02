@@ -1,0 +1,15 @@
+package com.fdmgroup.controller;
+
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.fdmgroup.model.User;
+
+public class AuthenticationController {
+
+	@RequestMapping(value = "/login")
+	public String showLogin(Model model){
+		model.addAttribute("user", new User());
+		return "login";
+	}
+}

@@ -62,7 +62,7 @@ public class Question {
 		loadPossibleAnswers();
 		String q = "\n"+question+"\n";
 		for (String string : possibleAnswers) {
-			q += "\n\t (" + string;
+			q += "\n\t ("+(char)(65+possibleAnswers.indexOf(string))+ ") " + string;
 		}
 		return q;
 	}

@@ -107,7 +107,7 @@ public class HomeView {
 				+" "+SessionUser.getLoggedInUser().getLastName()+" ***");
 		System.out.println("This is your Teacher dashboard");
 		System.out.println("Press 1 to logout \nPress 2 to view all exams"
-				+ "Press 2 to create exams \nPress 4 to view exam results.........");
+				+ "\nPress 3 to create exams \nPress 4 to view exam results..");
 		String option = scanner.nextLine();
 		switch (option){
 		case "1":

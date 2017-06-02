@@ -1,0 +1,35 @@
+package com.fdmgroup.aspect;
+
+import java.util.Arrays;
+
+import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.annotation.After;
+import org.aspectj.lang.annotation.AfterThrowing;
+import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Before;
+import org.aspectj.lang.annotation.Pointcut;
+import org.springframework.stereotype.Component;
+
+@Component
+@Aspect
+public class LoggingAspect2 {
+
+	@Pointcut("execution(* com.fdmgroup.service.ShoppingCart.*(..))")
+	private void emptyMethod(){
+	}
+	
+	@Before("emptyMethod()")
+	public void logBefore(JoinPoint jp){
+		System.out.println("Logging before. "+jp.getSignature().getName()+"-->"+Arrays.toString(jp.getArgs()));
+	}
+	
+	@After("emptyMethod()")
+	public void logAfter(JoinPoint jp){
+		System.out.println("Logging after. "+jp.getSignature().getName()+"-->"+Arrays.toString(jp.getArgs()));
+	}
+	
+	@AfterThrowing("emptyMethod()")
+	public void logAfterThrow(JoinPoint jp){
+		System.out.println("Logging after throwing exception. "+jp.getSignature().getName()+"-->"+Arrays.toString(jp.getArgs()));
+	}
+}

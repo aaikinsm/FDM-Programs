@@ -1,0 +1,6 @@
+1496357652747	Delete element
+1496423176113	Rename type 'ExamCollectionDao'
+1496423254488	Rename field 'examCollectionDao'
+1496423290811	Rename type 'UserCollectionDao'
+1496423336052	Rename type 'ExamJPADao'
+1496423441000	Rename field 'userCollectionDao'

@@ -3,8 +3,8 @@ package com.fdmgroup.controller;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
-import com.fdmgroup.dao.ExamCollectionDao;
-import com.fdmgroup.dao.UserCollectionDao;
+import com.fdmgroup.dao.ExamJpaDao;
+import com.fdmgroup.dao.UserJpaDao;
 import com.fdmgroup.model.Course;
 import com.fdmgroup.model.Exam;
 import com.fdmgroup.model.Question;
@@ -15,13 +15,13 @@ import com.fdmgroup.view.HomeView;
 public class HomeController {
 
 	private static HomeController homeController;
-	private UserCollectionDao userDao;
+	private UserJpaDao userDao;
 	EntityManagerFactory emf = Persistence.createEntityManagerFactory("SoloProject");
 	
 	
 	private HomeController() {
 		super();
-		userDao = UserCollectionDao.getInstance();
+		userDao = UserJpaDao.getInstance();
 		
 	}
 

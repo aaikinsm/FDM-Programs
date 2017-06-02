@@ -57,6 +57,10 @@ public class Result {
 		return user;
 	}
 
+	public void setUser(User user) {
+		this.user = user;
+	}
+
 	public void addResultData(boolean resultData) {
 		if(resultData)
 			correct++;
@@ -88,6 +92,10 @@ public class Result {
 
 	public int getTotal() {
 		return total;
+	}
+
+	public void setTotal(int numOfQuestions) {
+		total = numOfQuestions;
 	}
 
 }

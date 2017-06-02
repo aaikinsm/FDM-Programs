@@ -1,0 +1,23 @@
+package com.fdmgroup.aspect;
+
+import org.aspectj.lang.annotation.After;
+import org.aspectj.lang.annotation.AfterThrowing;
+import org.aspectj.lang.annotation.Before;
+
+public class LoggingAspect2 {
+
+	@Before("execution(* com.fdmgroup.service.ShoppingCart.*(..))")
+	public void logBefore(){
+		System.out.println("Logging before...");
+	}
+	
+	@After("execution(* com.fdmgroup.service.ShoppingCart.*(..))")
+	public void logAfter(){
+		System.out.println("Logging after...");
+	}
+	
+	@AfterThrowing("execution(* com.fdmgroup.service.ShoppingCart.*(..))")
+	public void logAfterThrow(){
+		System.out.println("Logging after throwing exception...");
+	}
+}

@@ -1,0 +1,40 @@
+package com.fdmgroup.service;
+
+import javax.xml.registry.infomodel.PersonName;
+
+public class Customer {
+
+	private Person person;
+	private String orderType;
+
+	public Customer(Person person, String orderType) {
+		super();
+		this.person = person;
+		this.orderType = orderType;
+	}
+
+	public Customer() {
+		super();
+	}
+
+	@Override
+	public String toString() {
+		return "Customer [person=" + person + ", orderType=" + orderType + "]";
+	}
+
+	public Person getPerson() {
+		return person;
+	}
+
+	public void setPerson(Person person) {
+		this.person = person;
+	}
+
+	public String getOrderType() {
+		return orderType;
+	}
+
+	public void setOrderType(String orderType) {
+		this.orderType = orderType;
+	}
+}

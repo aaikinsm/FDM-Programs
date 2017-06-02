@@ -1,0 +1,16 @@
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+
+import com.fdmgroup.config.DiConfigurator;
+import com.fdmgroup.service.Car;
+
+public class MainApp {
+
+	public static void main(String[] args) {
+		ApplicationContext context = new AnnotationConfigApplicationContext(DiConfigurator.class);
+		Car car = context.getBean(Car.class);
+		System.out.println(car);
+		
+		((AnnotationConfigApplicationContext)context).close();
+	}
+}

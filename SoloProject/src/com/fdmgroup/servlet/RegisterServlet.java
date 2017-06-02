@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import com.fdmgroup.dao.UserCollectionDao;
+import com.fdmgroup.dao.UserJpaDao;
 import com.fdmgroup.model.User;
 
 /**
@@ -30,13 +30,16 @@ public class RegisterServlet extends HttpServlet {
 		String fname = request.getParameter("firstname");
 		String lname = request.getParameter("lastname");
 		
-		User foundUser = UserCollectionDao.getInstance().findByUsername(username);
+		UserJpaDao userDao = new UserJpaDao();
+		
+		User foundUser = userDao.findByUsername(username);
 		if(foundUser == null){
 			User user = new User(username, password, fname, lname);
-			UserCollectionDao.getInstance().create(user);	
+			userDao.create(user);	
 			HttpSession session = request.getSession();
 			session.setAttribute("user", user);
-			session.setMaxInactiveInterval(60);
+			session.setMaxInactiveInterval(300);
+			session.setAttribute("errorMsg","");
 			RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/welcomeStudent.jsp");
 			rd.forward(request, response);
 		}else{

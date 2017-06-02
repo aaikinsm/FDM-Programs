@@ -1,0 +1,45 @@
+package com.fdmgroup.servlet;
+
+import java.io.IOException;
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import com.fdmgroup.model.Exam;
+import com.fdmgroup.model.Result;
+
+/**
+ * Servlet implementation class ExamNext
+ */
+@WebServlet("/next")
+public class ExamNextServlet extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+       
+    public ExamNextServlet() {
+        super();
+        // TODO Auto-generated constructor stub
+    }
+
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		Exam exam = (Exam) request.getSession().getAttribute("exam");
+		int count = ((int) request.getSession().getAttribute("questionCount"))+1;
+		Result result = (Result) request.getSession().getAttribute("result");
+		result.addResultData(Boolean.parseBoolean(request.getParameter("ans")));
+		if(count == exam.getNumOfQuestions()){
+			//TODO add exam complete functions
+			System.out.println("Exam Complete");
+		}else{
+		request.setAttribute("questionCount",count);
+		request.setAttribute("result", result);
+		request.setAttribute("question", exam.getNextQuestion());
+		request.setAttribute("exam", exam);
+		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/exam.jsp");
+		rd.forward(request, response);
+		}
+	}
+
+}

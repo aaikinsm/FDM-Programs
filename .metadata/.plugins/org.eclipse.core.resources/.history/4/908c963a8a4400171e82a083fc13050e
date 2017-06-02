@@ -1,0 +1,23 @@
+package com.fdmgroup.app;
+
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+import com.fdmgroup.service.GreetService;
+import com.fdmgroup.service.Messenger;
+
+public class MainApp {
+
+	public static void main(String[] args) {
+		ApplicationContext context = new ClassPathXmlApplicationContext("spring-config.xml");
+		//GreetService greet = (GreetService)context.getBean("greet");
+		GreetService greet = context.getBean("greet", GreetService.class);
+		GreetService greet2 = context.getBean("greet2", GreetService.class);
+		greet.say();
+		greet2.say();
+		System.out.println("------------------------");
+		Messenger messenger = context.getBean("messenger",Messenger.class);
+		messenger.sendMessage("david@bowie.com", "Hello David! Hope everything is fine with you");
+	}
+
+}

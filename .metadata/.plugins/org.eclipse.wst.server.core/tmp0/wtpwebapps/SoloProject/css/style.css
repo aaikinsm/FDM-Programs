@@ -1,0 +1,45 @@
+th {
+	background-color: #DDF;
+}
+
+h1 {
+	text-align: center;
+}
+
+th, td {
+	padding: 15px;
+}
+
+tr:hover {
+	background-color: #f5f5f5
+}
+
+
+
+#headerText {
+	color: white;
+	font-size: 3em;
+	padding: 10px;
+}
+
+#navbar {
+	padding: 10px;
+}
+
+body {
+    padding-top: 100px; 
+}
+
+#loginRegisterContainer{
+	background: url(http://my-smashing.smashingapps.netdna-cdn.com/wp-content/uploads/2013/04/blurbackgrounds9.jpg);
+    background-size: 100%;
+}
+.error{
+	color:red;
+}
+
+.form-signin {
+    max-width: 330px;
+    padding: 15px;
+    margin: 0 auto;
+}

@@ -1,4 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<server port="8080">
-  <module context="HTMLExample" name="HTMLExample" path="C:/Users/albert.mensah/JavaEclipseWorkspace/.metadata/.plugins/org.eclipse.wst.server.core/tmp0/HTMLExample" type="static"/>
-</server>

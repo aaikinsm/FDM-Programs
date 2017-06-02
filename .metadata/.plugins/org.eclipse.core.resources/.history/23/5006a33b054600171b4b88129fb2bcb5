@@ -1,0 +1,43 @@
+package com.fdmgroup.service;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
+@Component
+@Scope
+public class Car extends Vehicle{
+
+	@Autowired
+	private Gear gear;
+
+	public Car(Gear gear) {
+		super();
+		this.gear = gear;
+	}
+
+	public Car() {
+		super();
+	}
+
+	public Car(String type, String model, String color, int numOfWheels) {
+		super(type, model, color, numOfWheels);
+	}
+
+	public Gear getGear() {
+		return gear;
+	}
+
+	public void setGear(Gear gear) {
+		this.gear = gear;
+	}
+
+	@Override
+	public String toString() {
+		return "Car [gear=" + gear + "]";
+	}
+
+	
+	
+	
+}

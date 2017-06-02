@@ -1,0 +1,106 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.fdmgroup</groupId>
+    <artifactId>SpringAOPSample</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <properties>
+        <spring-version>4.1.7.RELEASE</spring-version>
+    </properties>
+    <build>
+        <sourceDirectory>src</sourceDirectory>
+        <plugins>
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.3</version>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+    <dependencies>
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjweaver</artifactId>
+            <version>1.7.3</version>
+        </dependency>
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjrt</artifactId>
+            <version>1.7.3</version>
+        </dependency>
+        <dependency>
+            <groupId>cglib</groupId>
+            <artifactId>cglib</artifactId>
+            <version>2.2.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-aop</artifactId>
+            <version>${spring-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-beans</artifactId>
+            <version>${spring-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>${spring-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-core</artifactId>
+            <version>${spring-version}</version>
+        </dependency>
+    </dependencies>
+</project>
+
+Kind Regards,
+Benjamin Fonooni, PhD
+Academy Trainer
+E: benjamin.fonooni@fdmgroup.com
+ 
+ 
+
+130 Adelaide Street West, Suite 2000, Toronto, ON, M5H 3P5, Canada 
+North America | Europe | Asia | Africa
+
+From: Benjamin Fonooni 
+Sent: Wednesday, May 31, 2017 8:45 AM
+To: Albert Mensah; Brady Lee; Edwin Lai; Lebin Huang; Michelle Mingi; Shawn Quach; Shawn Xue; Taha Hussain
+Subject: Spring AOP POM
+
+<dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjweaver</artifactId>
+            <version>1.7.3</version>
+        </dependency>
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjrt</artifactId>
+            <version>1.7.3</version>
+        </dependency>
+        <dependency>
+            <groupId>cglib</groupId>
+            <artifactId>cglib</artifactId>
+            <version>2.2.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-aop</artifactId>
+            <version>4.1.7.RELEASE</version>
+        </dependency>
+
+Kind Regards,
+Benjamin Fonooni, PhD
+Academy Trainer
+E: benjamin.fonooni@fdmgroup.com
+ 
+ 
+
+130 Adelaide Street West, Suite 2000, Toronto, ON, M5H 3P5, Canada 
+North America | Europe | Asia | Africa

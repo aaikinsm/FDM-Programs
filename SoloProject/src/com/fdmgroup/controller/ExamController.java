@@ -6,8 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-import com.fdmgroup.dao.ExamCollectionDao;
-import com.fdmgroup.dao.UserCollectionDao;
+import com.fdmgroup.dao.ExamJpaDao;
+import com.fdmgroup.dao.UserJpaDao;
 import com.fdmgroup.model.Exam;
 import com.fdmgroup.model.Question;
 import com.fdmgroup.model.Result;
@@ -21,7 +21,7 @@ public class ExamController {
 	private Exam exam;
 	private Result result;
 	private User user;
-	private ExamCollectionDao examCollectionDao;
+	private ExamJpaDao examCollectionDao;
 	private static ExamController examController;
 	private int examTime, qRemaining;
 	Question q;
@@ -31,7 +31,7 @@ public class ExamController {
 
 	private ExamController() {
 		super();
-		examCollectionDao = ExamCollectionDao.getInstance();
+		examCollectionDao = ExamJpaDao.getInstance();
 		user = SessionUser.getLoggedInUser();
 	}
 
@@ -42,64 +42,57 @@ public class ExamController {
 		return examController;
 	}
 
-	public List<Exam> viewExams(int courseId) {
-		if (courseId == 0) {
-			List<Exam> exams = examCollectionDao.findAll();
-			if (exams.isEmpty()){
-				System.out.println("There are no available exams");
-				return null;
+	public void viewExams(int courseId) {
+		List<Exam> exams = examCollectionDao.findAll();
+		
+		if (exams.isEmpty()) {
+			System.out.println("There are no available exams");
+		} else {
+			System.out.println("Enter the ID of the exam you would like to open");
+			for (Exam exam : exams) {
+				if((exam.getCourse() !=null && exam.getCourse().getCourseId() == courseId) || courseId == 0)
+				System.out.println("ID:" + exam.getId() + ") " + exam.getTitle());
 			}
-			else {
-				System.out.println("Enter the ID of the exam you would like to open");
-				for (Exam exam : exams) {
-					System.out.println("ID:" + exam.getId() + ") " + exam.getTitle());
-				}
-				Scanner in = new Scanner(System.in);
-				int idNum = in.nextInt();
-				startExam(idNum);				
-				return exams;
-			}
+			Scanner in = new Scanner(System.in);
+			int idNum = in.nextInt();
+			startExam(idNum);
 		}
-		return null;
 	}
 
-	
 	public void viewUserResults(User user) {
-		List<Result> uResults =  examCollectionDao.getUserResults(user);
-		if (uResults.isEmpty()){
+		List<Result> uResults = examCollectionDao.getUserResults(user);
+		if (uResults.isEmpty()) {
 			System.out.println("You have not taken an exam yet");
-		}
-		else{
+		} else {
 			for (Result result : uResults) {
 				Exam e = examCollectionDao.findById(result.getExam().getId());
-				System.out.print(e.getTitle()+" --> "+result.calculateResult()+"%");
-				if(result.passed())
+				System.out.print(e.getTitle() + " --> " + result.calculateResult() + "%");
+				if (result.passed())
 					System.out.println(" : Passed");
 				else
 					System.out.println(" : Failed");
 			}
 		}
-		
+
 	}
 
 	public void viewExamResults(User user) {
-		List<Result> uResults =  examCollectionDao.getExamResults(user);
-		if (uResults.isEmpty()){
+		List<Result> uResults = examCollectionDao.getExamResults(user);
+		if (uResults.isEmpty()) {
 			System.out.println("No one has taken your exam yet");
-		}
-		else{
+		} else {
 			for (Result result : uResults) {
 				Exam e = examCollectionDao.findById(result.getExam().getId());
-				User u = UserCollectionDao.getInstance().findById(result.getUser().getId());
-				System.out.print(u.getFirstName()+" "+u.getLastName()+" --> "+e.getTitle()+
-						": "+result.calculateResult()+"%");
-				if(result.passed())
+				User u = UserJpaDao.getInstance().findById(result.getUser().getId());
+				System.out.print(u.getFirstName() + " " + u.getLastName() + " --> " + e.getTitle() + ": "
+						+ result.calculateResult() + "%");
+				if (result.passed())
 					System.out.println(" : Passed");
 				else
 					System.out.println(" : Failed");
 			}
 		}
-		
+
 	}
 
 	public void startExam(int id) {
@@ -161,60 +154,61 @@ public class ExamController {
 		ArrayList<Question> questions = new ArrayList<>();
 		CreateExamView createEView = new CreateExamView();
 		createEView.addQButton.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if(!createEView.questionText.getText().isEmpty()){
+				if (!createEView.questionText.getText().isEmpty()) {
 					Question q = new Question(createEView.questionText.getText());
 					createEView.questionText.setText("");
-					if(!createEView.ans1.getText().isEmpty()){
-						q.addPossibleAnswer("a) "+createEView.ans1.getText());
+					if (!createEView.ans1.getText().isEmpty()) {
+						q.addPossibleAnswer("a) " + createEView.ans1.getText());
 						createEView.ans1.setText("");
 					}
-					if(!createEView.ans2.getText().isEmpty()){
-						q.addPossibleAnswer("b) "+createEView.ans2.getText());
+					if (!createEView.ans2.getText().isEmpty()) {
+						q.addPossibleAnswer("b) " + createEView.ans2.getText());
 						createEView.ans2.setText("");
 					}
-					if(!createEView.ans3.getText().isEmpty()){
-						q.addPossibleAnswer("c) "+createEView.ans3.getText());
+					if (!createEView.ans3.getText().isEmpty()) {
+						q.addPossibleAnswer("c) " + createEView.ans3.getText());
 						createEView.ans3.setText("");
 					}
-					if(!createEView.ans4.getText().isEmpty()){
-						q.addPossibleAnswer("d) "+createEView.ans4.getText());
+					if (!createEView.ans4.getText().isEmpty()) {
+						q.addPossibleAnswer("d) " + createEView.ans4.getText());
 						createEView.ans4.setText("");
 					}
-					if (createEView.selections.getSelectedCheckbox() == null){
+					if (createEView.selections.getSelectedCheckbox() == null) {
 						createEView.heading.setText("Please select the correct answer");
-					}else{
-						q.setCorrectAnswer(createEView.selections.getSelectedCheckbox().getLabel().substring(0,1));
-						
+					} else {
+						q.setCorrectAnswer(createEView.selections.getSelectedCheckbox().getLabel().substring(0, 1));
+
 						questions.add(q);
-						createEView.heading.setText("Question #"+(questions.size()+1));
+						createEView.heading.setText("Question #" + (questions.size() + 1));
 					}
-					
-				}
-				else{
+
+				} else {
 					createEView.heading.setText("Please enter a question");
 				}
 			}
 		});
-		
-		
+
 		createEView.doneButton.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (questions.isEmpty() || createEView.title.getText().equals("Enter Exam Title Here")){
+				if (questions.isEmpty() || createEView.title.getText().equals("Enter Exam Title Here")) {
 					createEView.heading.setText("You forgot to set a title or add a question");
-				}else{
-					int seconds = Integer.parseInt(createEView.time.getText()); //:TODO error handling
+				} else {
+					int seconds = Integer.parseInt(createEView.time.getText()); // :TODO
+																				// error
+																				// handling
 					int rand = 0;
-					if (createEView.randomized.isEnabled()) rand = 1;
+					if (createEView.randomized.isEnabled())
+						rand = 1;
 					Exam myExam = new Exam(seconds, createEView.title.getText(), rand, user);
 					myExam.setQuestions(questions);
 					examCollectionDao.create(myExam);
 				}
-				
+
 			}
 		});
 	}

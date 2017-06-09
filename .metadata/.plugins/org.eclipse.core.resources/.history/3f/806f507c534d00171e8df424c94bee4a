@@ -1,0 +1,275 @@
+package com.fdmgroup.model;
+
+import java.util.List;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+
+import org.hibernate.validator.constraints.NotEmpty;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+@Entity
+@Table(name = "GP_USER")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+@NamedQueries({ @NamedQuery(name = "user.findAll", query = "SELECT u FROM User u"),
+		@NamedQuery(name = "user.findById", query = "SELECT u FROM User u WHERE u.id= :uid "),
+		@NamedQuery(name = "user.findByUsername", query = "SELECT u FROM User u WHERE u.username= :uname"),
+		@NamedQuery(name = "user.findByFirstname", query = "SELECT u FROM User u WHERE u.firstname= :ufirstname"),
+		@NamedQuery(name = "user.findByLastname", query = "SELECT u FROM User u WHERE u.lastname= :ulastname "),
+		@NamedQuery(name = "user.findLikeFirstname", query = "SELECT u FROM User u WHERE u.firstname LIKE :ufirstname") })
+public class User implements IStorable {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private int id;
+
+	@Column(nullable = false, unique = true, length = 50)
+	@NotEmpty
+	private String username;
+
+	@Column(name = "pw", nullable = false)
+	@NotEmpty
+	private String password;
+
+	@Column
+	private String firstname;
+
+	@Column
+	private String lastname;
+
+	// url to thumbnail img
+	@Column
+	private String profilePicture;
+
+	@Column
+	private String email;
+	
+	@Column
+	private String joinMonth;
+
+	@Column(nullable = false)
+	private String status;
+
+	@OneToOne(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST })
+	@JsonIgnore
+	private Role role;
+
+	@OneToMany(mappedBy = "owner")
+	@JsonIgnore
+	private List<Room> ownedRooms;
+
+	@ManyToMany(mappedBy = "invitedUsers")
+	@JsonIgnore
+	private List<Room> invitedRooms;
+
+	@OneToMany(mappedBy = "author")
+	@Column(name = "test")
+	private List<Message> messages;
+
+	@OneToMany(mappedBy = "author")
+	@JsonIgnore
+	private List<Edit> edits;
+
+	@OneToOne(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST })
+	@JsonIgnore
+	private LastMessage lastMessage;
+
+	@OneToOne(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST })
+	@JsonIgnore
+	private LastEdit lastEdit;
+
+	public User() {
+		super();
+	}
+
+	public User(String username, String firstname, String lastname, String email, String status, Role role) {
+		super();
+		this.username = username;
+		this.firstname = firstname;
+		this.lastname = lastname;
+		this.email = email;
+		this.status = status;
+		this.role = role;
+	}
+
+	public User(String username, String firstname, String lastname, String email, String password) {
+		super();
+		this.username = username;
+		this.firstname = firstname;
+		this.lastname = lastname;
+		this.email = email;
+		this.password = password;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public String getFirstname() {
+		return firstname;
+	}
+
+	public void setFirstname(String firstname) {
+		this.firstname = firstname;
+	}
+
+	public String getLastname() {
+		return lastname;
+	}
+
+	public void setLastname(String lastname) {
+		this.lastname = lastname;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public Role getRole() {
+		return role;
+	}
+
+	public void setRole(Role role) {
+		this.role = role;
+	}
+
+	public List<Room> getOwnedRooms() {
+		return ownedRooms;
+	}
+
+	public void setOwnedRooms(List<Room> ownedRooms) {
+		this.ownedRooms = ownedRooms;
+	}
+
+	public List<Room> getInvitedRooms() {
+		return invitedRooms;
+	}
+
+	public void setInvitedRooms(List<Room> invitedRooms) {
+		this.invitedRooms = invitedRooms;
+	}
+
+	public List<Message> getMessages() {
+		return messages;
+	}
+
+	public void setMessages(List<Message> messages) {
+		this.messages = messages;
+	}
+
+	public List<Edit> getEdits() {
+		return edits;
+	}
+
+	public void setEdits(List<Edit> edits) {
+		this.edits = edits;
+	}
+
+	public String getProfilePicture() {
+		return profilePicture;
+	}
+
+	public void setProfilePicture(String profilePicture) {
+		this.profilePicture = profilePicture;
+	}
+
+	public LastMessage getLastMessage() {
+		return lastMessage;
+	}
+
+	public void setLastMessage(LastMessage lastMessage) {
+		this.lastMessage = lastMessage;
+	}
+
+	public LastEdit getLastEdit() {
+		return lastEdit;
+	}
+
+	public void setLastEdit(LastEdit lastEdit) {
+		this.lastEdit = lastEdit;
+	}
+
+	public String getJoinMonth() {
+		return joinMonth;
+	}
+
+	public void setJoinMonth(String joinMonth) {
+		this.joinMonth = joinMonth;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + id;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		User other = (User) obj;
+		if (id != other.id)
+			return false;
+		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "User [id=" + id + ", username=" + username + ", password=" + password + ", firstname=" + firstname
+				+ ", lastname=" + lastname + ", email=" + email + ", status=" + status + ", role=" + role + "]";
+	}
+
+}

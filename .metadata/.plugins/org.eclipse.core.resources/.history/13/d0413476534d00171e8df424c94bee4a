@@ -1,0 +1,144 @@
+package com.fdmgroup.model;
+
+import java.util.Calendar;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+@Entity
+@Table(name="GP_MESSAGE")
+@NamedQueries({
+	@NamedQuery(name = "message.findAll", query = "SELECT m FROM Message m"),
+	@NamedQuery(name = "message.findById", query = "SELECT m FROM Message m WHERE m.id= :mid "),
+	@NamedQuery(name = "message.findAllMsgAfterLastMsg", query = "SELECT m FROM Message m WHERE m.id > :lmid AND m.author.id = :lmuid AND m.chat.id = :lmcid")
+})
+public class Message implements IStorable{
+
+	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	private int id;
+	
+	@Temporal(TemporalType.DATE)
+	private Calendar timestamp;
+	@Column
+	private String content;
+	
+	@ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST})
+	@JsonBackReference
+	private User author;
+	
+	@ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST})
+	@JsonBackReference
+	private Chat chat;
+
+	@OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST})
+	@JsonIgnore
+	private LastMessage lastMessage;
+	
+	public Message() {
+		super();
+	}
+
+	public Message(Calendar timestamp, String content) {
+		super();
+		this.timestamp = timestamp;
+		this.content = content;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public Calendar getTimestamp() {
+		return timestamp;
+	}
+
+	public void setTimestamp(Calendar timestamp) {
+		this.timestamp = timestamp;
+	}
+
+	public String getContent() {
+		return content;
+	}
+
+	public void setContent(String content) {
+		this.content = content;
+	}
+
+	public User getAuthor() {
+		return author;
+	}
+
+	public void setAuthor(User author) {
+		this.author = author;
+	}
+
+	public Chat getChat() {
+		return chat;
+	}
+
+	public void setChat(Chat chat) {
+		this.chat = chat;
+	}
+
+	public LastMessage getLastMessage() {
+		return lastMessage;
+	}
+
+	public void setLastMessage(LastMessage lastMessage) {
+		this.lastMessage = lastMessage;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + id;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Message other = (Message) obj;
+		if (id != other.id)
+			return false;
+		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "Message [timestamp=" + timestamp + ", content=" + content + ", author=" + author + ", chat=" + chat
+				+ ", lastMessage=" + lastMessage + "]";
+	}
+	
+	
+	
+	
+	
+}

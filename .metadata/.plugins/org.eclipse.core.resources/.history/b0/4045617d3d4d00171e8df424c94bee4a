@@ -1,0 +1,75 @@
+$(document).ready(function(){
+	
+	/*$("form").submit(function(){
+		var content = $('#message-content').val();
+	    var timestamp = currentTime();
+	    alert(content);
+	    alert(timestamp);
+	});*/
+	
+		$("#btn-send").click(function() {
+			alert("heloooo");
+			$("#chatForm").ajaxForm({url: 'addMessage', type: 'post'})
+		})
+		
+	$.ajax({
+        url: url,
+        type:"POST",
+        dataType:"json",
+        data:{type:"message", content:content, timestamp:timestamp, Mob_Num:mobNum},
+        //type: should be same in server code, otherwise code will not run
+        ContentType:"application/json",
+        success: function(response){
+            alert(JSON.stringify(response));
+        },
+        error: function(err){
+            alert(JSON.stringify(err));
+        }
+    })
+	
+	
+});
+ 
+function currentTime(){
+	  var today = new Date();
+	  var y = today.getFullYear();
+	  var mon = today.getMonth();
+	  var d = today.getDate();
+	  var h = today.getHours();
+	  var m = today.getMinutes();
+	  var s = today.getSeconds(); 
+	  return [ y, mon, d, h, m, s ].join(':')
+}
+
+
+function WebSocketTest() {
+	if ("WebSocket" in window) {
+		alert("WebSocket is supported by your Browser!");
+
+		// Let us open a web socket
+		var ws = new WebSocket("ws://localhost:9998/echo");
+
+		ws.onopen = function() {
+			// Web Socket is connected, send data using send()
+			ws.send("Message to send");
+			alert("Message is sent...");
+		};
+
+		ws.onmessage = function(evt) {
+			var received_msg = evt.data;
+			alert("Message is received...");
+		};
+
+		ws.onclose = function() {
+			// websocket is closed.
+			alert("Connection is closed...");
+		};
+	}
+
+	else {
+		// The browser doesn't support WebSocket
+		alert("WebSocket NOT supported by your Browser!");
+	}
+}
+
+

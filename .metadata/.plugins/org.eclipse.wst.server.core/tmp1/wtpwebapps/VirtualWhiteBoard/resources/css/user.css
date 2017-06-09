@@ -1,0 +1,45 @@
+@import
+	url('https://fonts.googleapis.com/css?family=Open+Sans:400,700')
+	;
+
+* {
+    box-sizing: border-box;
+    font-family: 'Open Sans', sans-serif;
+}
+
+
+.ace-nav{
+	padding: 5px;
+	
+	
+}
+
+#profilePicArea{
+	width:200px;
+	height:100%;
+}
+
+
+body{
+	font-size:18px;
+}
+
+#ownedRoomTable thead{
+	font-size:14px;
+	background-color:blue;
+}
+#invitedRoomTable thead{
+	font-size:14px;
+	background-color:blue;
+}
+
+.modal{
+	font-size:14px;
+}
+
+.navbar-buttons{
+	font-size:14px;
+}
+
+
+ 

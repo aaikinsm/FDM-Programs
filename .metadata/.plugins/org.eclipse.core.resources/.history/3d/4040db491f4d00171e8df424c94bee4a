@@ -1,0 +1,14 @@
+general.selectedLanguage = enSelected Language
+general.changeLanguage = enChange Language
+general.welcome = enWelcome
+general.title = enRemarkable Virtual White Board
+general.slogan = encollaborative drawing made remarkably easy
+general.createdBy = enCreated by the Remarkable FDMers
+login.username = enUsername
+login.password = enPassword
+login.login = enLogin
+login.register = enRegister
+login.firstname = enFirstname
+login.lastname = enLastname
+login.email = enEmail Address
+login.size = The {0} size must be between {1} and {2} characters

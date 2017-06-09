@@ -1,0 +1,35 @@
+$(document).ready(function(){
+	
+	$("#chatForm").submit(function(e) {
+
+	    var url = "addMessage"; // the script where you handle the form input.
+
+	    $.ajax({
+	           type: "POST",
+	           url: url,
+	           data: $("#chatForm").serialize(), // serializes the form's elements.
+	           success: function(data)
+	           {
+	               // show response from the php script.
+	           }
+	         });
+
+	    e.preventDefault(); // avoid to execute the actual submit of the form.
+	});
+	
+	if(typeof(EventSource) !== "undefined") {	
+	    var source = new EventSource("getMessages?userIdStr=85&chatIdStr=92");
+	    
+	    source.onmessage = function(event) {
+	    	console.log("run")
+	    	var data = $.parseJSON(event.data);
+	    	console.log(data);
+	    };
+	} else {
+		$("#sseDiv").html("Your browser does not support server-sent events.");
+	}
+	
+	
+});
+ 
+

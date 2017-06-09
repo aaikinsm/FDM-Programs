@@ -1,0 +1,444 @@
+
+package com.fdmgroup.app;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.List;
+
+import javax.annotation.Resource;
+
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+import com.fdmgroup.dao.CanvasJpaDao;
+import com.fdmgroup.dao.ChatJpaDao;
+import com.fdmgroup.dao.DbConnection;
+import com.fdmgroup.dao.EditJpaDao;
+import com.fdmgroup.dao.LastEditJpaDao;
+import com.fdmgroup.dao.LastMessageJpaDao;
+import com.fdmgroup.dao.MessageJpaDao;
+import com.fdmgroup.dao.RoleJpaDao;
+import com.fdmgroup.dao.RoomJpaDao;
+import com.fdmgroup.dao.UserJpaDao;
+import com.fdmgroup.model.Canvas;
+import com.fdmgroup.model.Chat;
+import com.fdmgroup.model.Edit;
+import com.fdmgroup.model.LastMessage;
+import com.fdmgroup.model.Message;
+import com.fdmgroup.model.Role;
+import com.fdmgroup.model.Room;
+import com.fdmgroup.model.User;
+
+
+public class MainApp {
+
+	@Resource(name = "dbConnection")
+	DbConnection dbConnection;
+	
+	@Resource(name = "userJpaDao")
+	private UserJpaDao userDao;
+	
+	@Resource(name = "roleJpaDao")
+	private RoleJpaDao roleDao;
+	
+	@Resource(name = "roomJpaDao")
+	private RoomJpaDao roomDao;
+
+	@Resource(name = "canvasJpaDao")
+	private CanvasJpaDao canvasDao;
+	
+	@Resource(name = "chatJpaDao")
+	private ChatJpaDao chatDao;
+	@Resource(name = "editJpaDao")
+	private EditJpaDao editDao;
+	
+	@Resource(name = "messageJpaDao")
+	private MessageJpaDao messageDao;
+	
+	@Resource(name = "lastMessageJpaDao")
+	private LastMessageJpaDao lastMessageDao;
+	
+	@Resource(name = "lastEditJpaDao")
+	private LastEditJpaDao lastEditDao;
+
+	public static void main(String[] args) {
+
+		ApplicationContext context = new ClassPathXmlApplicationContext("/META-INF/applicationContext.xml");
+
+		MainApp app = context.getBean(MainApp.class);
+		
+		app.start();
+		
+//		app.test();
+		
+//		app.myTest();
+		
+		((ClassPathXmlApplicationContext) context).close();
+
+	}
+
+	private void test(){
+		System.out.println(	userDao.findByUsername("jdoe"));
+	}
+	
+	private void myTest(){
+		Calendar sDate = new GregorianCalendar();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		try {
+			sDate.setTime(sdf.parse("2017-06-27"));
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+
+		Role adminRole = new Role("admin");
+		Role userRole= new Role("user");
+		
+		User admin = new User("admin", "Admin", "Admin", "admin@admin.com", "active", adminRole);
+		
+		User user = new User("jdoe", "John", "Doe", "xxx@xcx.com", "active", userRole);
+		User user1 = new User("mjane", "Marry", "Jane", "xxx@xcx.com", "active", userRole);
+		User user2 = new User("asmith", "Alex", "Smith", "xxx@xcx.com", "active", userRole);
+		User user3 = new User("jdoe3", "John2", "Doe2", "xxx@xcx.com", "active", userRole);
+		User user4 = new User("jdoe4", "John3", "Doe3", "xxx@xcx.com", "inactive", userRole);
+		
+		admin.setProfilePicture("default.png");
+		user.setProfilePicture("default.png");
+		user1.setProfilePicture("default.png");
+		user2.setProfilePicture("default.png");
+		user3.setProfilePicture("default.png");
+		user4.setProfilePicture("default.png");
+		
+		admin.setPassword("1234");
+		user.setPassword("1234");
+		user1.setPassword("1234");
+		user2.setPassword("1234");
+		user3.setPassword("1234");
+		user4.setPassword("1234");
+		
+		user.setJoinMonth("January");
+		user1.setJoinMonth("March");
+		user2.setJoinMonth("March");
+		user3.setJoinMonth("June");
+		user4.setJoinMonth("December");
+		
+		userDao.create(admin);
+		userDao.create(user);
+		userDao.create(user1);
+		userDao.create(user2);
+		userDao.create(user3);
+		userDao.create(user4);
+		
+		Room javaRoom = new Room("java2017","Java",sDate,"active");
+		Room appRoom = new Room("app2017","App Support",sDate,"active");
+		Room coolRoom = new Room("cool2017","Cool",sDate,"inactive");
+		
+		javaRoom.setOwner(userDao.findByUsername("jdoe"));
+		appRoom.setOwner(userDao.findByUsername("mjane"));
+		coolRoom.setOwner(userDao.findByUsername("asmith"));
+		
+		List<User> users=new ArrayList<User>();
+		users.add(userDao.findByUsername("mjane"));
+		users.add(userDao.findByUsername("asmith"));
+		users.add(userDao.findByUsername("jdoe3"));
+		users.add(userDao.findByUsername("jdoe4"));
+		
+		javaRoom.setInvitedUsers(users);
+		appRoom.setInvitedUsers(users);
+		coolRoom.setInvitedUsers(new ArrayList<>());
+		
+		Chat javaChat = new Chat();
+		Chat appChat = new Chat();
+		Chat coolChat = new Chat();
+
+		javaChat.setStatus("active");
+		appChat.setStatus("active");
+		coolChat.setStatus("active");
+		
+		javaRoom.setChat(javaChat);
+		appRoom.setChat(appChat);
+		coolRoom.setChat(coolChat);
+		
+		roomDao.create(javaRoom);
+		roomDao.create(appRoom);
+		roomDao.create(coolRoom);
+		
+		Message m1 = new Message(sDate, "hello");
+		Message m2 = new Message(sDate, "hi");
+		Message m3 = new Message(sDate, "good day");
+		Message m4 = new Message(sDate, "hello world");
+		m1.setAuthor(userDao.findByUsername("mjane"));
+		m2.setAuthor(userDao.findByUsername("jdoe3"));
+		m3.setAuthor(userDao.findByUsername("jdoe4"));
+		m4.setAuthor(userDao.findByUsername("asmith"));
+		
+		
+		m1.setChat(javaChat);
+		m2.setChat(appChat);
+		m3.setChat(javaChat);
+		m4.setChat(javaChat);
+		
+		List<Message> ms=new ArrayList<>();
+		ms.add(m1);
+		ms.add(m2);
+		ms.add(m3);
+		ms.add(m4);
+		
+		messageDao.create(m1);
+		messageDao.create(m2);
+		messageDao.create(m3);
+		messageDao.create(m4);
+		
+		
+		
+		Canvas c1 = new Canvas("java");
+		Canvas c2 = new Canvas("app");
+		Canvas c3 = new Canvas("cool");
+		
+		c1.setRoom(javaRoom);
+		c2.setRoom(appRoom);
+		c3.setRoom(coolRoom);
+		
+		canvasDao.create(c1);
+		canvasDao.create(c2);
+		canvasDao.create(c3);
+		
+		Edit e1 = new Edit(sDate,"testEdit");
+		Edit e2 = new Edit(sDate,"testEdit2");
+		Edit e3 = new Edit(sDate,"testEdit3");
+		
+		e1.setCanvas(c1);
+		e2.setCanvas(c2);
+		e3.setCanvas(c3);
+		
+		e1.setAuthor(userDao.findByUsername("jdoe"));
+		e2.setAuthor(userDao.findByUsername("mjane"));
+		e3.setAuthor(userDao.findByUsername("asmith"));
+		
+		editDao.create(e1);
+		editDao.create(e2);
+		editDao.create(e3);
+
+		
+		LastMessage lm = new LastMessage(m2, user, javaChat);
+		lastMessageDao.create(lm);
+		System.out.println(messageDao.findAllMsgAfterLastMsg(lm, user.getId(),javaChat.getId()));
+		int userId = user.getId();
+		int chatId = javaChat.getId();
+		System.out.println(lastMessageDao.findByUserAndChat(userId, chatId));
+		System.out.println(lastMessageDao.findById(lm.getId()));
+		
+		dbConnection.close();
+		System.out.println("done");
+	}
+	
+	private void start() {
+		Calendar sDate = new GregorianCalendar();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		try {
+			sDate.setTime(sdf.parse("2017-06-27"));
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+
+		Role adminRole = new Role("admin");
+		Role userRole= new Role("user");
+		
+		User admin = new User("admin", "Admin", "Admin", "admin@admin.com", "active", adminRole);
+		
+		User user = new User("jdoe", "John", "Doe", "xxx@xcx.com", "active", userRole);
+		User user1 = new User("mjane", "Marry", "Jane", "xxx@xcx.com", "active", userRole);
+		User user2 = new User("asmith", "Alex", "Smith", "xxx@xcx.com", "active", userRole);
+		User user3 = new User("jdoe3", "John2", "Doe2", "xxx@xcx.com", "active", userRole);
+		User user4 = new User("jdoe4", "John3", "Doe3", "xxx@xcx.com", "inactive", userRole);
+		
+		admin.setProfilePicture("default.png");
+		user.setProfilePicture("default.png");
+		user1.setProfilePicture("default.png");
+		user2.setProfilePicture("default.png");
+		user3.setProfilePicture("default.png");
+		user4.setProfilePicture("default.png");
+		
+		admin.setPassword("1234");
+		user.setPassword("1234");
+		user1.setPassword("1234");
+		user2.setPassword("1234");
+		user3.setPassword("1234");
+		user4.setPassword("1234");
+		
+		userDao.create(admin);
+		userDao.create(user);
+		userDao.create(user1);
+		userDao.create(user2);
+		userDao.create(user3);
+		userDao.create(user4);
+		
+		Room javaRoom = new Room("java2017","Java",sDate,"active");
+		Room appRoom = new Room("app2017","App Support",sDate,"active");
+		Room coolRoom = new Room("cool2017","Cool",sDate,"inactive");
+		
+		javaRoom.setOwner(userDao.findByUsername("jdoe"));
+		appRoom.setOwner(userDao.findByUsername("mjane"));
+		coolRoom.setOwner(userDao.findByUsername("asmith"));
+		
+		List<User> users=new ArrayList<User>();
+		users.add(userDao.findByUsername("mjane"));
+		users.add(userDao.findByUsername("asmith"));
+		users.add(userDao.findByUsername("jdoe3"));
+		users.add(userDao.findByUsername("jdoe4"));
+		
+		javaRoom.setInvitedUsers(users);
+		appRoom.setInvitedUsers(users);
+		coolRoom.setInvitedUsers(new ArrayList<>());
+		
+		Chat javaChat = new Chat();
+		Chat appChat = new Chat();
+		Chat coolChat = new Chat();
+
+		javaChat.setStatus("active");
+		appChat.setStatus("active");
+		coolChat.setStatus("active");
+		
+		javaRoom.setChat(javaChat);
+		appRoom.setChat(appChat);
+		coolRoom.setChat(coolChat);
+		
+		roomDao.create(javaRoom);
+		roomDao.create(appRoom);
+		roomDao.create(coolRoom);
+		
+		Message m1 = new Message(sDate, "hello");
+		Message m2 = new Message(sDate, "hi");
+		Message m3 = new Message(sDate, "good day");
+		Message m4 = new Message(sDate, "hello world");
+		m1.setAuthor(userDao.findByUsername("mjane"));
+		m2.setAuthor(userDao.findByUsername("jdoe3"));
+		m3.setAuthor(userDao.findByUsername("jdoe4"));
+		m4.setAuthor(userDao.findByUsername("asmith"));
+		
+		
+		m1.setChat(javaChat);
+		m2.setChat(appChat);
+		m3.setChat(javaChat);
+		m4.setChat(javaChat);
+		
+		List<Message> ms=new ArrayList<>();
+		ms.add(m1);
+		ms.add(m2);
+		ms.add(m3);
+		ms.add(m4);
+		
+		messageDao.create(m1);
+		messageDao.create(m2);
+		messageDao.create(m3);
+		messageDao.create(m4);
+		
+		
+		
+		Canvas c1 = new Canvas("java");
+		Canvas c2 = new Canvas("app");
+		Canvas c3 = new Canvas("cool");
+		
+		c1.setRoom(javaRoom);
+		c2.setRoom(appRoom);
+		c3.setRoom(coolRoom);
+		
+		canvasDao.create(c1);
+		canvasDao.create(c2);
+		canvasDao.create(c3);
+		
+		Edit e1 = new Edit(sDate,"testEdit");
+		Edit e2 = new Edit(sDate,"testEdit2");
+		Edit e3 = new Edit(sDate,"testEdit3");
+		
+		e1.setCanvas(c1);
+		e2.setCanvas(c2);
+		e3.setCanvas(c3);
+		
+		e1.setAuthor(userDao.findByUsername("jdoe"));
+		e2.setAuthor(userDao.findByUsername("mjane"));
+		e3.setAuthor(userDao.findByUsername("asmith"));
+		
+		editDao.create(e1);
+		editDao.create(e2);
+		editDao.create(e3);
+
+		dbConnection.close();
+	}
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+// --------------------------------------------------------------------------------------------
+
+/*
+ * Edit edit = new Edit(sDate, "I Edited"); List<Edit> edits = new
+ * ArrayList<>(); edits.add(edit);
+ * 
+ * Canvas canvas = new Canvas("test"); canvas.setEdits(edits);
+ * 
+ * Message message = new Message(sDate, "test"); List<Message> messages= new
+ * ArrayList<>(); messages.add(message);
+ * 
+ * Chat chat = new Chat(); chat.setMessage(messages);
+ * 
+ * 
+ * 
+ * 
+ * Room room = new Room("owned", "Room 1", sDate, "active"); room.setChat(chat);
+ * 
+ * Room room2 = new Room("invited", "Room 2", sDate, "active");
+ * 
+ * List<Room> roomsOwned =new ArrayList<>(); roomsOwned.add(room); List<Room>
+ * roomsInvited =new ArrayList<>(); roomsInvited.add(room2);
+ * 
+ * Role role = new Role("Admin");
+ * 
+ * User user = new User("jdoe2","John","Doe","xxx@xcx.com","active", role);
+ * user.setPassword("1234");
+ * 
+ * //user.setOwnedRooms(roomsOwned);
+ * 
+ * room.setOwner(user); RoomDao roomDao = new RoomDao();
+ * 
+ * roomDao.create(room);
+ */
+
+// UserJpaDao.getInstance().create(user);
+
+//
+// List<User> invitedUsers = new ArrayList<>();
+// invitedUsers.add(user);
+//
+
+/*
+ * //user.setOwnedRooms(roomsOwned); //user.setOwnedRooms(roomsInvited);
+ * 
+ * UserJpaDao userDao=UserJpaDao.getInstance(); RoomDao roomDao = new RoomDao();
+ * 
+ * room.setOwner(user); room2.setInvitedUsers(invitedUsers);
+ * 
+ * roomDao.create(room); roomDao.create(room2); //
+ * user.setOwnedRooms(roomsOwned);
+ * 
+ */
+
+// userDao.create(user);
+
+/*
+ * User foundUser = UserJpaDao.getInstance().findByUsername("jdoe");
+ * System.out.println(foundUser.getOwnedRooms());
+ */

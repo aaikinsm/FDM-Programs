@@ -1,0 +1,49 @@
+$(document).ready(function(){
+	
+	$("#chatForm").submit(function(e) {
+
+	    var url = "addMessage"; // the script where you handle the form input.
+
+	    $.ajax({
+	           type: "POST",
+	           url: url,
+	           data: $("#chatForm").serialize(), // serializes the form's elements.
+	           success: function(data)
+	           {
+	               // show response from the php script.
+	           }
+	         });
+
+	    e.preventDefault(); // avoid to execute the actual submit of the form.
+	    $("#messageSent").text("");
+	});
+	
+	if(typeof(EventSource) !== "undefined") {	
+	    var source = new EventSource("getMessages?userIdStr=6&chatIdStr=12");
+	    
+	    source.onmessage = function(event) {
+	    	console.log("run")
+	    	var data = $.parseJSON(event.data);
+	    	console.log(data[0].content);
+	    	for(i = 0; i<data.length; i++){
+	    		$('<li class="left clearfix"><span class="chat-img pull-left" id="blee">'+
+                            '<img src="https://image.flaticon.com/icons/png/128/149/149452.png" width="40px" alt="User Avatar" class="img-circle">'+
+                        '</span>'+
+                            '<div class="chat-body clearfix">'+
+                                '<div class="header">'+
+                                    '<strong class="primary-font">'+  "****placeholderName****"+'</strong> '+
+                                    	'<small class="pull-right text-muted">'+
+                                        '<span class="glyphicon glyphicon-time"></span>'+data[i].timestamp+
+                                        '</small>'+
+                                '</div>'+data[i].content+' </div>'+
+                        '</li>').appendTo($("#chatMsg"));
+	    	}
+	    };
+	} else {
+		$("#sseDiv").html("Your browser does not support server-sent events.");
+	}
+	
+	
+});
+ 
+

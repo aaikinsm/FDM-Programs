@@ -1,0 +1,82 @@
+package com.fdmgroup.controller;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.http.MediaType;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.fdmgroup.dao.RoomJpaDao;
+import com.fdmgroup.dao.UserJpaDao;
+import com.fdmgroup.model.Room;
+import com.fdmgroup.model.User;
+
+@Controller
+public class RoomController {
+	
+	@Resource(name = "userJpaDao")
+	private UserJpaDao userDao;
+	@Resource(name = "roomJpaDao")
+	private RoomJpaDao roomDao;
+	
+	@RequestMapping(value="/roomSearch", method={RequestMethod.GET, RequestMethod.POST},  produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody List<User> search(@RequestParam String query) {
+		System.out.println("Search...");
+		List<User> users = userDao.findLikeFirstname(query);
+		System.out.println(users);
+		return users;
+	}
+	
+	@RequestMapping(value="/room/{roomUrl}", method=RequestMethod.GET)
+	public String room(@PathVariable String roomUrl, Model model){
+		Room room = roomDao.findByUrl(roomUrl);
+		model.addAttribute("roomUrl", roomUrl);
+		if (room == null){
+			model.addAttribute("roomName", roomUrl);
+		} else {
+			model.addAttribute("roomName", room.getName());
+		}
+		return "room";
+	}
+	
+//	@RequestMapping(value="/room", method=RequestMethod.GET)
+//	public String room(){
+//		return "room";
+//	}
+	
+	@RequestMapping(value="/roomInviteUser", method={RequestMethod.GET, RequestMethod.POST})
+	public @ResponseBody Room inviteUserToRoom(@RequestParam String userId, @RequestParam String roomUrl){
+		User user = userDao.findById(Integer.valueOf(userId));
+		Room room = roomDao.findByUrl(roomUrl);
+		if (!room.getInvitedUsers().contains(user)){
+			room.getInvitedUsers().add(user);
+			System.out.println("Inviting user " + user.getUsername() + " to room " + roomUrl + "...");
+		} else {
+			System.out.println("Couldn't invite user to room.");
+		}
+		return roomDao.update(room);
+	}
+	
+	@RequestMapping(value="/roomGetInvitedUsers", method = RequestMethod.GET)
+	public @ResponseBody List<User> getInvitedUsers(@RequestParam String userId, @RequestParam String roomUrl ){
+		Room room = roomDao.findByUrl(roomUrl);
+		List<User> users = userDao.findAll();
+		List<User> invitedUsers = new ArrayList<>();
+		for (User user : users) {
+			if (user.getInvitedRooms().contains(room)){
+				invitedUsers.add(user);
+			}
+		}
+		System.out.println(invitedUsers);
+		return invitedUsers;
+	}
+}

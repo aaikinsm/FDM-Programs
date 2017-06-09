@@ -1,0 +1,100 @@
+package com.fdmgroup.controller;
+
+import java.io.ByteArrayOutputStream;
+import java.io.OutputStream;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitter;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fdmgroup.dao.ChatJpaDao;
+import com.fdmgroup.dao.LastMessageJpaDao;
+import com.fdmgroup.dao.MessageJpaDao;
+import com.fdmgroup.dao.UserJpaDao;
+import com.fdmgroup.model.Chat;
+import com.fdmgroup.model.LastMessage;
+import com.fdmgroup.model.Message;
+import com.fdmgroup.model.User;
+
+@Controller
+public class MessageRetrieval {
+
+	@Autowired
+	LastMessageJpaDao lastMessageJpaDao;
+	
+	@Autowired
+	MessageJpaDao messageJpaDao;
+	
+	@Autowired
+	ChatJpaDao chatDao;
+	
+	@Autowired
+	UserJpaDao userDao;
+	
+	@RequestMapping("/getMessages")
+    public ResponseBodyEmitter getNotifications(@RequestParam (value="userIdStr", required=true) String userIdStr, @RequestParam(value="chatIdStr", required=true) String chatIdStr) {
+		System.out.println("start");
+        final SseEmitter emitter = new SseEmitter(Long.MAX_VALUE);
+        ExecutorService service = Executors.newSingleThreadExecutor();
+        
+        service.execute(() -> {
+            try {
+            	int biggestId = 0;
+                int userId = Integer.parseInt(userIdStr);
+                int chatId = Integer.parseInt(chatIdStr);
+                Chat chat = chatDao.findById(chatId);
+                LastMessage lastMessage=null;
+            	OutputStream out=null;
+            	
+            	//get last message id(user id,room id)
+            	lastMessage = lastMessageJpaDao.findByUserAndChat(userId, chatId);
+            	if(lastMessage == null){
+            		User user = userDao.findById(userId);
+            		lastMessage = new LastMessage();
+            		lastMessage.setMessage(new Message());
+            		lastMessage.getMessage().setId(0);
+            	}
+            	System.out.println(lastMessage.getId());
+            	System.out.println(lastMessage.getMessage().getId());
+            	List<Message> newMessages = messageJpaDao.findAllMsgAfterLastMsg(lastMessage, userId,chatId);
+            	byte[] data={};
+            	
+            	if(newMessages.size()>0){            		
+            		DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm a z");
+               	    out = new ByteArrayOutputStream();
+            	    final ObjectMapper mapper = new ObjectMapper();
+            		mapper.setDateFormat(df);
+                	mapper.writeValue(out, newMessages);
+                	data = ((ByteArrayOutputStream) out).toByteArray();
+                	System.out.println(new String(data));
+                	
+            		lastMessage.setMessage(newMessages.get(newMessages.size() - 1));
+            	}
+            	emitter.send(data, MediaType.APPLICATION_JSON);
+            	
+        		if(lastMessageJpaDao.update(lastMessage)==null){
+        			lastMessageJpaDao.create(lastMessage);
+        		}
+                Thread.sleep(1500);
+            } catch (Exception e) {
+                e.printStackTrace();
+                emitter.completeWithError(e);
+                return;
+            }
+            emitter.complete();
+        });
+        
+
+        return emitter;
+    }
+}

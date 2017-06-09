@@ -1,0 +1,11 @@
+general.selectedLanguage = Selected Language
+general.changeLanguage = Change Language
+general.welcome = Welcome
+calculate.number = Number
+calculate.calc = Calculate Sum
+calculate.sumIs = The sum is
+login.hello = Hello
+login.username = Username
+login.password = Password
+login.login = Login
+login.size = The {0} size must be between {1} and {2} characters

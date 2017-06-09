@@ -1,0 +1,11 @@
+general.selectedLanguage = Langue Selectionnee
+general.changeLanguage = Changer de Langue
+general.welcome = Bienvenue
+general.title = Remarkable Tableau blanc virtuel
+general.slogan = Le dessin collaboratif n'est pas facile
+general.createdBy = Cree par les etudiants FDM
+login.username = Nom d'utilisateur
+login.password = Mot de passe
+login.login = S'identifier
+login.register = Registre
+login.size = The {0} size must be between {1} and {2} characters

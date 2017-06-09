@@ -1,0 +1,58 @@
+package com.fdmgroup.controller;
+
+import java.util.Calendar;
+import java.util.Map;
+
+import javax.annotation.Resource;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.fdmgroup.dao.ChatJpaDao;
+import com.fdmgroup.dao.MessageJpaDao;
+import com.fdmgroup.dao.UserJpaDao;
+import com.fdmgroup.model.Chat;
+import com.fdmgroup.model.Message;
+import com.fdmgroup.model.User;
+
+@Controller
+public class MessageController {
+	
+	@Autowired
+	MessageJpaDao messageDao;
+	
+	@Autowired
+	ChatJpaDao chatDao;
+	
+	@Autowired
+	UserJpaDao userDao;
+	
+	@RequestMapping(value = "/addMessage", method = RequestMethod.POST)
+	public @ResponseBody Message addMessage(@RequestParam String userId, @RequestParam String chatId, @RequestParam String messageSent){
+		Message message = new Message();
+		
+		Chat chat = chatDao.findById(Integer.parseInt(chatId));
+		User user = userDao.findById(Integer.parseInt(userId));
+		String messageStr = messageSent;
+		Calendar timestamp = Calendar.getInstance();
+		
+		message.setChat(chat);
+		message.setAuthor(user);
+		message.setContent(messageStr);
+		message.setTimestamp(timestamp);
+		
+		System.out.println("add Message "+message.toString());
+		
+		if(chat== null || user == null){
+			return null;
+		}
+		return messageDao.create(message);
+	}
+	
+}
